@@ -3,7 +3,7 @@
 //  All pages import this. Never write fetch() calls elsewhere.
 // ============================================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwFgIJDRn3lfjBV4yrrkgKwe2wBk9MuuktqiZ_MxxgB-RU9_FHv6fXxARA1wl7_KlYr/exec"; // ← Replace after deploying
+const API_URL = "https://script.google.com/macros/s/AKfycbw9MSe9_-EWuJccsqQNZhfvPGiGJ8n13FNg-SZXeEllmhCB0-PNatowo2n22ISbQ1PL/exec"; // ← Replace after deploying
 
 // ── Core request helpers ─────────────────────────────────────
 
