@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — ShopMart</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { display:flex; min-height:100vh; background:var(--c-bg); }
+
+    /* ── Sidebar ─────────────────────────────────────────── */
+    .admin-sidebar {
+      width      : 220px;
+      flex-shrink: 0;
+      background : var(--c-navy);
+      min-height : 100vh;
+      padding    : var(--sp-6) 0;
+      position   : sticky;
+      top        : 0;
+    }
+    .admin-sidebar .brand {
+      font-family  : var(--ff-display);
+      font-size    : var(--ts-xl);
+      color        : #fff;
+      padding      : 0 var(--sp-6) var(--sp-6);
+      border-bottom: 1px solid rgba(255,255,255,.1);
+      margin-bottom: var(--sp-4);
+    }
+    .admin-sidebar .brand span { color:var(--c-amber); }
+    .admin-nav a {
+      display    : flex;
+      align-items: center;
+      gap        : var(--sp-3);
+      padding    : var(--sp-3) var(--sp-6);
+      color      : rgba(255,255,255,.7);
+      font-size  : var(--ts-sm);
+      font-weight: 500;
+      transition : background var(--transition), color var(--transition);
+    }
+    .admin-nav a:hover, .admin-nav a.active {
+      background: rgba(255,255,255,.08);
+      color     : #fff;
+    }
+    .admin-nav a.active { border-left:3px solid var(--c-amber); }
+
+    /* ── Main ─────────────────────────────────────────────── */
+    .admin-main { flex:1; padding:var(--sp-8); overflow-x:hidden; }
+    .admin-main h1 { font-family:var(--ff-display); font-size:var(--ts-2xl); margin-bottom:var(--sp-8); }
+
+    /* ── Stat cards ──────────────────────────────────────── */
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:var(--sp-4); margin-bottom:var(--sp-10); }
+    .stat-card {
+      background   : var(--c-surface);
+      border       : 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding      : var(--sp-6);
+    }
+    .stat-card__label { font-size:var(--ts-sm); color:var(--c-muted); margin-bottom:var(--sp-2); }
+    .stat-card__value { font-family:var(--ff-display); font-size:var(--ts-3xl); color:var(--c-navy); font-weight:700; }
+    .stat-card__sub   { font-size:var(--ts-sm); color:var(--c-muted); margin-top:var(--sp-1); }
+    .stat-card--accent { border-left:4px solid var(--c-amber); }
+
+    /* ── Tables ──────────────────────────────────────────── */
+    .data-table { width:100%; border-collapse:collapse; background:var(--c-surface); border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--c-border); }
+    .data-table th { background:var(--c-bg); padding:var(--sp-3) var(--sp-4); text-align:left; font-size:var(--ts-sm); font-weight:600; color:var(--c-muted); border-bottom:1px solid var(--c-border); }
+    .data-table td { padding:var(--sp-3) var(--sp-4); font-size:var(--ts-sm); border-bottom:1px solid var(--c-border); }
+    .data-table tr:last-child td { border-bottom:none; }
+    .data-table tr:hover td { background:var(--c-bg); }
+
+    .section-panel { margin-bottom:var(--sp-10); }
+    .section-panel h2 { font-family:var(--ff-display); font-size:var(--ts-xl); margin-bottom:var(--sp-4); }
+    .panel-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--sp-4); }
+
+    /* ── Add product form ────────────────────────────────── */
+    .add-product-form {
+      background   : var(--c-surface);
+      border       : 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding      : var(--sp-6);
+      margin-bottom: var(--sp-6);
+      display      : none;
+    }
+    .add-product-form.open { display:block; }
+    .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--sp-4); }
+
+    @media(max-width:900px){
+      .admin-sidebar { display:none; }
+      .form-grid-2   { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="admin-sidebar">
+  <div class="brand">Shop<span>Mart</span><br><small style="font-family:var(--ff-body);font-size:var(--ts-xs);opacity:.5">Admin</small></div>
+  <nav class="admin-nav">
+    <a href="dashboard.html" class="active">📊 Dashboard</a>
+    <a href="products.html">📦 Products</a>
+    <a href="orders.html">🛒 Orders</a>
+    <a href="customers.html">👥 Customers</a>
+    <a href="coupons.html">🏷️ Coupons</a>
+    <a href="settings.html">⚙️ Settings</a>
+    <div style="border-top:1px solid rgba(255,255,255,.1);margin:var(--sp-4) 0"></div>
+    <a href="../index.html">← Back to Store</a>
+    <a href="#" id="logoutBtn">🚪 Logout</a>
+  </nav>
+</aside>
+
+<!-- Main -->
+<main class="admin-main">
+  <h1>Dashboard</h1>
+
+  <!-- Stats -->
+  <div class="stats-grid" id="statsGrid">
+    <div class="stat-card stat-card--accent"><div class="stat-card__label">Today's Revenue</div><div class="stat-card__value" id="sTodayRev">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Total Revenue</div><div class="stat-card__value" id="sTotalRev">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Today's Orders</div><div class="stat-card__value" id="sTodayOrd">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Total Orders</div><div class="stat-card__value" id="sTotalOrd">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Pending Orders</div><div class="stat-card__value" id="sPending">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Total Products</div><div class="stat-card__value" id="sProducts">—</div></div>
+    <div class="stat-card stat-card--accent"><div class="stat-card__label">Low Stock Alerts</div><div class="stat-card__value" id="sLowStock" style="color:var(--c-warn)">—</div></div>
+    <div class="stat-card"><div class="stat-card__label">Customers</div><div class="stat-card__value" id="sCustomers">—</div></div>
+  </div>
+
+  <!-- Recent Orders -->
+  <div class="section-panel">
+    <div class="panel-head">
+      <h2>Recent Orders</h2>
+      <a href="orders.html" class="btn btn--ghost btn--sm">View all →</a>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead><tr><th>Order ID</th><th>Date</th><th>Customer</th><th>Total</th><th>Status</th><th>Action</th></tr></thead>
+        <tbody id="recentOrdersBody"><tr><td colspan="6" style="text-align:center;color:var(--c-muted)">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<div id="loader"><div class="spinner"></div></div>
+
+<script src="../js/api.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+  requireAuth();
+
+  document.getElementById("logoutBtn").addEventListener("click", async e=>{
+    e.preventDefault();
+    await Auth.logout(); clearSession(); window.location.href="../login.html";
+  });
+
+  async function loadDashboard(){
+    const [stats, ordersData] = await Promise.all([Admin.stats(), Orders.getAll()]);
+    hideLoader();
+
+    if(stats.success){
+      document.getElementById("sTodayRev").textContent  = formatPrice(stats.todayRevenue||0);
+      document.getElementById("sTotalRev").textContent  = formatPrice(stats.totalRevenue||0);
+      document.getElementById("sTodayOrd").textContent  = stats.todayOrders;
+      document.getElementById("sTotalOrd").textContent  = stats.totalOrders;
+      document.getElementById("sPending").textContent   = stats.pendingOrders;
+      document.getElementById("sProducts").textContent  = stats.totalProducts;
+      document.getElementById("sLowStock").textContent  = stats.lowStock;
+      document.getElementById("sCustomers").textContent = stats.totalCustomers;
+    }
+
+    if(ordersData.success){
+      const tbody = document.getElementById("recentOrdersBody");
+      const recent = ordersData.orders.slice(0,10);
+      if(!recent.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--c-muted)">No orders yet</td></tr>`; return; }
+      tbody.innerHTML = recent.map(o=>`
+        <tr>
+          <td><strong>#${o.OrderID}</strong></td>
+          <td>${formatDate(o.Date)}</td>
+          <td>${o.UserID}</td>
+          <td>${formatPrice(o.Total)}</td>
+          <td>${statusBadge(o.Status)}</td>
+          <td>
+            <select onchange="changeStatus('${o.OrderID}',this.value)" style="font-size:var(--ts-xs);padding:2px 6px;border:1px solid var(--c-border);border-radius:4px">
+              ${["Pending","Confirmed","Shipped","Out for Delivery","Delivered","Cancelled"].map(s=>`<option ${s===o.Status?"selected":""}>${s}</option>`).join("")}
+            </select>
+          </td>
+        </tr>`).join("");
+    }
+  }
+
+  async function changeStatus(orderId, status){
+    const res = await Admin.changeStatus(orderId, status);
+    toast(res.message, res.success?"success":"error");
+  }
+
+  loadDashboard();
+</script>
+</body>
+</html>
