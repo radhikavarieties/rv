@@ -999,7 +999,7 @@
       </ul>
       <div style="margin-top:var(--s4);font-size:var(--sm)">
         <p style="color:rgba(255,255,255,.5);margin-bottom:4px">Call us</p>
-        <a href="tel:+919028581890" style="color:var(--gp);font-weight:600">+91 9028581890</a>
+        <a href="tel:+919876543210" style="color:var(--gp);font-weight:600">+91 98765 43210</a>
       </div>
     </div>
   </div>
@@ -1013,9 +1013,11 @@
 <script>
 'use strict';
 /* ─────────────────────────────────────────────────────────
-   CONFIG  — replace after deploying Apps Script
+   CONFIG
+   Replace with your Apps Script /exec URL.
+   ⚠️  IMPORTANT: Use your actual deployed URL below.
 ───────────────────────────────────────────────────────── */
-const API = 'https://script.google.com/macros/s/AKfycbykIQFGFgsDQUiz2UHn3vMrlAI9_ZBimSDWTaIFPqlEovC4aOSj39TBWd9Y7EqcoqhB/exec';
+const API = 'https://script.google.com/macros/s/AKfycbykIQFGFgsDQUiz2UHn3vMrlAI9_ZBimSDWTaIFPqlEovC4aOSj39TBWd9Y7EqcoqhB/exec'; // ✅ Your real URL
 
 /* ─────────────────────────────────────────────────────────
    STATE
@@ -1084,18 +1086,72 @@ function toast(msg, type='') {
 }
 
 /* ─────────────────────────────────────────────────────────
-   API HELPERS
+   API HELPERS — CORS-SAFE for GitHub Pages → Google Apps Script
+   ─────────────────────────────────────────────────────────
+   WHY THIS MATTERS:
+   Google Apps Script does not handle CORS preflight (OPTIONS).
+   Sending Content-Type: application/json triggers a preflight,
+   which Apps Script cannot respond to — causing a CORS error.
+
+   THE FIX:
+   ✅  GET  requests → append all params as query string
+   ✅  POST requests → use FormData or URLSearchParams (no preflight)
+                       Apps Script reads: e.parameter.payload (JSON string)
+
+   On the Apps Script side, parse with:
+       const body = JSON.parse(e.parameter.payload || '{}');
+
+   This is the standard pattern recommended for Apps Script + GitHub Pages.
 ───────────────────────────────────────────────────────── */
-const isMock = () => API.includes('YOUR_');
-async function apiG(p) {
-  if (isMock()) return { success:false, _mock:true };
-  try { const r = await fetch(API+'?'+new URLSearchParams(p)); return r.json(); }
-  catch { return { success:false }; }
+
+const isMock = () => !API || API.includes('YOUR_APPS_SCRIPT');
+
+/* ── GET request — simple query string, no CORS issues ─── */
+async function apiG(params = {}) {
+  if (isMock()) return { success: false, _mock: true };
+  try {
+    const qs  = new URLSearchParams(params).toString();
+    const url = `${API}?${qs}`;
+    console.log('[API GET]', url);
+    const res = await fetch(url, { redirect: 'follow' });
+    const txt = await res.text();
+    console.log('[API GET response]', txt.substring(0, 200));
+    return JSON.parse(txt);
+  } catch (err) {
+    console.error('[API GET error]', err.message);
+    return { success: false, error: err.message };
+  }
 }
-async function apiP(b) {
-  if (isMock()) return { success:false, _mock:true };
-  try { const r = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}); return r.json(); }
-  catch { return { success:false }; }
+
+/* ── POST request — URLSearchParams body (NO CORS preflight) ─
+   Why: fetch with Content-Type: application/json sends a CORS
+   "preflight" OPTIONS request first. Apps Script cannot respond
+   to OPTIONS, so the browser blocks the call.
+
+   Fix: send body as URLSearchParams → browser uses
+   application/x-www-form-urlencoded → no preflight needed.
+   Apps Script receives the JSON string in e.parameter.payload.
+─────────────────────────────────────────────────────────────── */
+async function apiP(body = {}) {
+  if (isMock()) return { success: false, _mock: true };
+  try {
+    const form = new URLSearchParams();
+    form.append('payload', JSON.stringify(body));
+    console.log('[API POST] action:', body.action, '→', API);
+    const res = await fetch(API, {
+      method  : 'POST',
+      redirect: 'follow',
+      body    : form
+      // Do NOT set Content-Type manually — browser sets it to
+      // application/x-www-form-urlencoded automatically
+    });
+    const txt = await res.text();
+    console.log('[API POST response]', txt.substring(0, 300));
+    return JSON.parse(txt);
+  } catch (err) {
+    console.error('[API POST error]', err.message);
+    return { success: false, error: err.message };
+  }
 }
 
 /* ─────────────────────────────────────────────────────────
