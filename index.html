@@ -457,6 +457,10 @@
       .ci{grid-template-columns:64px 1fr;}.csub{grid-column:2;}
     }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+
+    /* ── Image upload zone ───────────────────────────────── */
+    #imgDropZone:hover{border-color:var(--g)!important;background:var(--sf);}
+    #imgDropZone.dragover{border-color:var(--g)!important;background:var(--gp);}
   </style>
 </head>
 <body>
@@ -465,7 +469,7 @@
 <div id="tw" aria-live="polite"></div>
 
 <!-- ANNOUNCEMENT -->
-<div class="ann">🎉 <strong>Grand Sale On!</strong> — Up to 40% off on selected products. Free delivery above ₹499.</div>
+<div class="ann">🧡 <strong>Rakhi Collection is Live!</strong> — Upto 40% off on Jewellery & Rakhi. Free delivery above ₹499. | Est. 1997 — Karve Nagar, Pune</div>
 
 <!-- NAVBAR -->
 <nav class="nav" id="nav" aria-label="Main navigation">
@@ -500,7 +504,7 @@
         <div class="ndrop" id="ndrop">
           <button onclick="go('profile');cdrop()">👤 My Profile</button>
           <button onclick="go('orders');cdrop()">📦 My Orders</button>
-          <button onclick="go('admin');cdrop()">🔧 Admin Panel</button>
+          <button id="adminNavBtn" onclick="go('admin');cdrop()" style="display:none">🔧 Admin Panel</button>
           <hr><button onclick="doLogout()">🚪 Log Out</button>
         </div>
       </span>
@@ -516,21 +520,21 @@
   <section class="hero" aria-labelledby="ht">
     <div class="hrow">
       <div>
-        <span class="heye">🪷 Trusted by 10,000+ families</span>
-        <h1 class="htitle" id="ht">Quality you<br>can <em>always</em> count on.</h1>
-        <p class="hsub">From daily groceries to festive wear — Radhika Varieties brings the best of every category right to your door.</p>
+        <span class="heye">🪷 Since 1997 — Trusted by Pune families</span>
+        <h1 class="htitle" id="ht">Traditional jewellery<br><em>modern hearts love.</em></h1>
+        <p class="hsub">Bridal sets, ethnic earrings, bangles, necklaces, Rakhi & more — from Karve Nagar, Pune to your doorstep.</p>
         <div class="hsearch"><label for="hs" class="sr">Search</label><input id="hs" type="search" placeholder="What are you looking for today?" autocomplete="off"><button onclick="doSearch()">Search</button></div>
         <div class="hpills">
           <span class="hpill">🚚 Free Delivery ₹499+</span>
-          <span class="hpill">↩️ Easy Returns</span>
+          <span class="hpill">💍 Genuine Quality</span>
           <span class="hpill">🔒 Secure Payments</span>
         </div>
       </div>
       <div class="hvis" aria-hidden="true">
-        <button class="hcard" onclick="go('products','Groceries')"><span class="hci">🛒</span><span class="hcl">Fresh Groceries</span><span class="hcs">500+ items</span></button>
-        <button class="hcard" onclick="go('products','Clothing')"><span class="hci">👗</span><span class="hcl">Clothing</span><span class="hcs">New arrivals</span></button>
-        <button class="hcard" onclick="go('products','Electronics')"><span class="hci">📱</span><span class="hcl">Electronics</span><span class="hcs">Top brands</span></button>
-        <button class="hcard" onclick="go('products','Kitchen')"><span class="hci">🍳</span><span class="hcl">Kitchenware</span><span class="hcs">Best sellers</span></button>
+        <button class="hcard" onclick="go('products','Jewellery')"><span class="hci">💍</span><span class="hcl">Jewellery</span><span class="hcs">Bridal & festive</span></button>
+        <button class="hcard" onclick="go('products','Earrings')"><span class="hci">✨</span><span class="hcl">Earrings</span><span class="hcs">New arrivals</span></button>
+        <button class="hcard" onclick="go('products','Rakhi')"><span class="hci">🧡</span><span class="hcl">Rakhi</span><span class="hcs">Festive collection</span></button>
+        <button class="hcard" onclick="go('products','Bags')"><span class="hci">👜</span><span class="hcl">Bags & Stationary</span><span class="hcs">Best sellers</span></button>
       </div>
     </div>
     <div class="hbot"><div class="sari"></div></div>
@@ -549,14 +553,14 @@
       <button class="btn bgh" onclick="go('products')">View All →</button>
     </div>
     <div class="cgrid">
-      <button class="ccard" onclick="go('products','Groceries')"><span class="cci">🛒</span><span class="ccn">Groceries</span><span class="ccs">Daily essentials</span></button>
-      <button class="ccard" onclick="go('products','Clothing')"><span class="cci">👗</span><span class="ccn">Clothing</span><span class="ccs">Men, Women, Kids</span></button>
-      <button class="ccard" onclick="go('products','Electronics')"><span class="cci">📱</span><span class="ccn">Electronics</span><span class="ccs">Gadgets & Devices</span></button>
-      <button class="ccard" onclick="go('products','Kitchen')"><span class="cci">🍳</span><span class="ccn">Kitchenware</span><span class="ccs">Cook in style</span></button>
-      <button class="ccard" onclick="go('products','Beauty')"><span class="cci">💄</span><span class="ccn">Beauty</span><span class="ccs">Skincare & More</span></button>
-      <button class="ccard" onclick="go('products','Home')"><span class="cci">🏡</span><span class="ccn">Home & Living</span><span class="ccs">Décor & Furniture</span></button>
-      <button class="ccard" onclick="go('products','Sports')"><span class="cci">⚽</span><span class="ccn">Sports</span><span class="ccs">Gear & Equipment</span></button>
-      <button class="ccard" onclick="go('products','Books')"><span class="cci">📚</span><span class="ccn">Books</span><span class="ccs">Learn & Explore</span></button>
+      <button class="ccard" onclick="go('products','Jewellery')"><span class="cci">💍</span><span class="ccn">Jewellery</span><span class="ccs">Earrings, bangles & more</span></button>
+      <button class="ccard" onclick="go('products','Earrings')"><span class="cci">✨</span><span class="ccn">Earrings</span><span class="ccs">Studs, drops & hoops</span></button>
+      <button class="ccard" onclick="go('products','Nosepin')"><span class="cci">💫</span><span class="ccn">Nose Pins</span><span class="ccs">Pins, rings & nath</span></button>
+      <button class="ccard" onclick="go('products','Bangles')"><span class="cci">🔮</span><span class="ccn">Bangles</span><span class="ccs">Kadas & sets</span></button>
+      <button class="ccard" onclick="go('products','Necklace')"><span class="cci">📿</span><span class="ccn">Necklaces</span><span class="ccs">Chains & sets</span></button>
+      <button class="ccard" onclick="go('products','Rakhi')"><span class="cci">🧡</span><span class="ccn">Rakhi</span><span class="ccs">Festive collection</span></button>
+      <button class="ccard" onclick="go('products','Bags')"><span class="cci">👜</span><span class="ccn">Bags</span><span class="ccs">Handbags & totes</span></button>
+      <button class="ccard" onclick="go('products','Stationary')"><span class="cci">✏️</span><span class="ccn">Stationary</span><span class="ccs">Notebooks & more</span></button>
     </div>
   </div></section>
 
@@ -564,14 +568,14 @@
 
   <section class="sec sec-alt"><div class="w">
     <div class="sh">
-      <div><span class="seye">Handpicked for you</span><h2 class="stitle">Featured <span>Products</span></h2></div>
+      <div><span class="seye">Bestsellers from Radhika Varieties</span><h2 class="stitle">Featured <span>Products</span></h2></div>
       <button class="btn bgh" onclick="go('products')">Browse All →</button>
     </div>
     <div class="pgrid">
-      <article class="pc"><div class="piw">🛒<span class="pbadge pbnew">New</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Groceries</p><h3><span class="pname" onclick="go('product','P001')">Premium Basmati Rice 5kg</span></h3><div class="ppricing"><span class="pprice">₹420</span><span class="pori">₹520</span></div><p class="psave">You save ₹100 (19% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P001')">Add to Cart</button></div></article>
-      <article class="pc"><div class="piw" style="background:var(--sf)">👗<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Clothing</p><h3><span class="pname" onclick="go('product','P002')">Cotton Kurti Set — Floral</span></h3><div class="ppricing"><span class="pprice">₹699</span><span class="pori">₹999</span></div><p class="psave">You save ₹300 (30% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P002')">Add to Cart</button></div></article>
-      <article class="pc"><div class="piw" style="background:var(--gp)">🍳<button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Kitchenware</p><h3><span class="pname" onclick="go('product','P003')">Non-Stick Kadai 28cm</span></h3><div class="ppricing"><span class="pprice">₹1,199</span></div><p class="psave" style="color:var(--tm)">Free delivery included</p><button class="btn bp pcta" onclick="addToCart(this,'P003')">Add to Cart</button></div></article>
-      <article class="pc"><div class="piw" style="background:var(--sf)">📱<span class="pbadge pbsale">Hot</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Electronics</p><h3><span class="pname" onclick="go('product','P004')">Bluetooth Earbuds Pro</span></h3><div class="ppricing"><span class="pprice">₹1,499</span><span class="pori">₹2,499</span></div><p class="psave">You save ₹1,000 (40% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P004')">Add to Cart</button></div></article>
+      <article class="pc"><div class="piw">✨<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Earrings</p><h3><span class="pname" onclick="go('product','P001')">Gold Plated Jhumka Earrings</span></h3><div class="ppricing"><span class="pprice">₹299</span><span class="pori">₹499</span></div><p class="psave">You save ₹200 (40% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P001')">Add to Cart</button></div></article>
+      <article class="pc"><div class="piw" style="background:var(--sf)">🔮<span class="pbadge pbnew">New</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Bangles</p><h3><span class="pname" onclick="go('product','P003')">Glass Bangle Set (12 pcs)</span></h3><div class="ppricing"><span class="pprice">₹149</span><span class="pori">₹249</span></div><p class="psave">You save ₹100 (40% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P003')">Add to Cart</button></div></article>
+      <article class="pc"><div class="piw" style="background:var(--gp)">📿<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Necklace</p><h3><span class="pname" onclick="go('product','P004')">Kundan Necklace Set</span></h3><div class="ppricing"><span class="pprice">₹799</span><span class="pori">₹1,299</span></div><p class="psave">You save ₹500 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P004')">Add to Cart</button></div></article>
+      <article class="pc"><div class="piw" style="background:var(--sf)">🧡<span class="pbadge pbnew">Festive</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Rakhi</p><h3><span class="pname" onclick="go('product','P005')">Designer Rakhi Set (5 pcs)</span></h3><div class="ppricing"><span class="pprice">₹249</span><span class="pori">₹399</span></div><p class="psave">You save ₹150 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P005')">Add to Cart</button></div></article>
     </div>
   </div></section>
 
@@ -580,9 +584,9 @@
   <section class="sec"><div class="w">
     <div class="deal">
       <div>
-        <p class="deye">Exclusive Members Only</p>
-        <h2 class="dtitle">Get deals before<br>anyone else.</h2>
-        <p class="dsub">Subscribe and receive special discounts, new arrivals, and festival offers directly in your inbox.</p>
+        <p class="deye">🧡 Rakhi & Festive Collection Live!</p>
+        <h2 class="dtitle">Subscribe for<br>exclusive offers.</h2>
+        <p class="dsub">Get first access to new arrivals, Rakhi collections, Diwali specials and members-only discounts.</p>
         <div class="dinp"><label for="nle" class="sr">Email</label><input id="nle" type="email" placeholder="your@email.com"><button class="btn bg bsm" onclick="subscribe()">Subscribe</button></div>
       </div>
       <div class="ddeco" aria-hidden="true">🪷</div>
@@ -590,18 +594,18 @@
   </div></section>
 
   <div class="tbar"><div class="tgrid">
-    <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499. Express available.</p></div></div>
-    <div class="ti"><div class="tico">↩️</div><div><p class="tit">Easy Returns</p><p class="tis">7-day hassle-free return on most products.</p></div></div>
+    <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499 across Pune & India.</p></div></div>
+    <div class="ti"><div class="tico">💍</div><div><p class="tit">Genuine Quality</p><p class="tis">Gold plated & certified jewellery since 1997.</p></div></div>
     <div class="ti"><div class="tico">🔒</div><div><p class="tit">Secure Payments</p><p class="tis">UPI, cards, net banking — 100% safe.</p></div></div>
-    <div class="ti"><div class="tico">🪷</div><div><p class="tit">Quality Promise</p><p class="tis">Every product inspected before dispatch.</p></div></div>
+    <div class="ti"><div class="tico">🪷</div><div><p class="tit">Since 1997</p><p class="tis">Trusted by Pune families for 25+ years.</p></div></div>
   </div></div>
 
   <section class="sec sec-alt"><div class="w">
     <div class="sh"><div><span class="seye">Customer Reviews</span><h2 class="stitle">What families <span>say</span></h2></div></div>
     <div class="testgrid">
-      <div class="tc"><div class="tcs">★★★★★</div><p class="tct">"The quality of groceries from Radhika Varieties is just like buying from a trusted local shop — fresh, correctly weighed, and delivered on time. I've been ordering for 6 months now."</p><div class="tca"><div class="tcav">P</div><div><p class="tcn">Priya Nair</p><p class="tcl">Pune, Maharashtra</p></div></div></div>
-      <div class="tc"><div class="tcs">★★★★★</div><p class="tct">"Ordered a kurti set for Diwali and was honestly surprised by the packaging and fabric quality. Even the delivery was a day early. Will definitely recommend to family!"</p><div class="tca"><div class="tcav">S</div><div><p class="tcn">Sunita Sharma</p><p class="tcl">Nagpur, Maharashtra</p></div></div></div>
-      <div class="tc"><div class="tcs">★★★★☆</div><p class="tct">"Good variety of products. The non-stick kadai I bought is still going strong after 4 months of daily use. Customer support was also very helpful with my query."</p><div class="tca"><div class="tcav">R</div><div><p class="tcn">Ramesh Kulkarni</p><p class="tcl">Nashik, Maharashtra</p></div></div></div>
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tct">"Bought the kundan necklace set for my daughter's wedding — it was absolutely stunning! The quality is exactly like Radhika tai showed us in the shop. Will order again for our next function!"</p><div class="tca"><div class="tcav">P</div><div><p class="tcn">Priya Kulkarni</p><p class="tcl">Karve Nagar, Pune</p></div></div></div>
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tct">"Ordered Rakhi sets for my three brothers — beautiful packaging, premium quality and delivered right on time before Rakshabandhan. Radhika Varieties never disappoints! Shopping here since 2010."</p><div class="tca"><div class="tcav">S</div><div><p class="tcn">Sneha Deshpande</p><p class="tcl">Kothrud, Pune</p></div></div></div>
+      <div class="tc"><div class="tcs">★★★★★</div><p class="tct">"The jhumka earrings I ordered are exactly like shown — great gold plating, light weight and perfect for daily wear. Delivery was fast and the price is unbeatable for this quality!"</p><div class="tca"><div class="tcav">M</div><div><p class="tcn">Madhuri Patil</p><p class="tcl">Warje, Pune</p></div></div></div>
     </div>
   </div></section>
 </div>
@@ -616,15 +620,15 @@
         <div class="fcard">
           <h4>Category</h4>
           <div id="catFilters">
-            <label class="fopt"><input type="radio" name="cat" value=""> All Categories</label>
-            <label class="fopt"><input type="radio" name="cat" value="Groceries"> 🛒 Groceries</label>
-            <label class="fopt"><input type="radio" name="cat" value="Clothing"> 👗 Clothing</label>
-            <label class="fopt"><input type="radio" name="cat" value="Electronics"> 📱 Electronics</label>
-            <label class="fopt"><input type="radio" name="cat" value="Kitchen"> 🍳 Kitchenware</label>
-            <label class="fopt"><input type="radio" name="cat" value="Beauty"> 💄 Beauty</label>
-            <label class="fopt"><input type="radio" name="cat" value="Home"> 🏡 Home & Living</label>
-            <label class="fopt"><input type="radio" name="cat" value="Sports"> ⚽ Sports</label>
-            <label class="fopt"><input type="radio" name="cat" value="Books"> 📚 Books</label>
+            <label class="fopt"><input type="radio" name="cat" value="" checked> All Categories</label>
+            <label class="fopt"><input type="radio" name="cat" value="Jewellery"> 💍 Jewellery</label>
+            <label class="fopt"><input type="radio" name="cat" value="Earrings"> ✨ Earrings</label>
+            <label class="fopt"><input type="radio" name="cat" value="Nosepin"> 💫 Nose Pins</label>
+            <label class="fopt"><input type="radio" name="cat" value="Bangles"> 🔮 Bangles</label>
+            <label class="fopt"><input type="radio" name="cat" value="Necklace"> 📿 Necklaces</label>
+            <label class="fopt"><input type="radio" name="cat" value="Rakhi"> 🧡 Rakhi</label>
+            <label class="fopt"><input type="radio" name="cat" value="Bags"> 👜 Bags</label>
+            <label class="fopt"><input type="radio" name="cat" value="Stationary"> ✏️ Stationary</label>
           </div>
         </div>
         <div class="fcard">
@@ -863,7 +867,7 @@
 <div class="page" id="pg-admin">
   <div class="adwrap">
     <div class="adsb"><div class="adsi">
-      <div class="adbrand">Shop<span>Mart</span><br><small style="font-family:var(--fb);font-size:var(--xs);opacity:.5">Admin</small></div>
+      <div class="adbrand">Radhika<span> ✦</span><br><small style="font-family:var(--fb);font-size:var(--xs);opacity:.5;letter-spacing:.05em">Admin Panel</small></div>
       <nav>
         <button class="adnl on" onclick="showAP('db',this)">📊 Dashboard</button>
         <button class="adnl" onclick="showAP('pr',this)">📦 Products</button>
@@ -941,16 +945,32 @@
     <div class="f2">
       <div class="fg" style="grid-column:1/-1"><label class="fl">Product Name *</label><input class="fi" id="fNm"></div>
       <div class="fg" style="grid-column:1/-1"><label class="fl">Description</label><textarea class="ft" id="fDs"></textarea></div>
-      <div class="fg"><label class="fl">Category *</label><select class="fs" id="fCt"><option value="">Select…</option><option>Groceries</option><option>Clothing</option><option>Electronics</option><option>Kitchen</option><option>Beauty</option><option>Home</option><option>Sports</option><option>Books</option></select></div>
+      <div class="fg"><label class="fl">Category *</label><select class="fs" id="fCt"><option value="">Select…</option><option>Jewellery</option><option>Earrings</option><option>Nosepin</option><option>Bangles</option><option>Necklace</option><option>Rakhi</option><option>Bags</option><option>Stationary</option></select></div>
       <div class="fg"><label class="fl">Status</label><select class="fs" id="fSt"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
       <div class="fg"><label class="fl">Price (₹) *</label><input class="fi" id="fPr" type="number"></div>
       <div class="fg"><label class="fl">Sale Price (₹)</label><input class="fi" id="fSp" type="number"></div>
       <div class="fg"><label class="fl">Stock *</label><input class="fi" id="fSk" type="number"></div>
       <div class="fg"><label class="fl">Featured</label><select class="fs" id="fFt"><option value="false">No</option><option value="true">Yes</option></select></div>
     </div>
+      <!-- Image Upload -->
+      <div class="fg" style="grid-column:1/-1">
+        <label class="fl">Product Photo</label>
+        <div style="border:2px dashed var(--br);border-radius:var(--rmd);padding:var(--s4);text-align:center;cursor:pointer;transition:border-color var(--ease)" id="imgDropZone" onclick="document.getElementById('fImg').click()">
+          <div id="imgPreview" style="display:none;margin-bottom:var(--s3)">
+            <img id="imgPreviewEl" style="max-height:120px;border-radius:var(--rm);margin:auto">
+          </div>
+          <div id="imgPlaceholder">
+            <div style="font-size:2rem;margin-bottom:var(--s2)">📷</div>
+            <p style="color:var(--tm);font-size:var(--sm)">Click to select photo<br><small>JPG, PNG, WEBP — max 5MB</small></p>
+          </div>
+          <input type="file" id="fImg" accept="image/*" style="display:none" onchange="previewImg(this)">
+        </div>
+        <p style="font-size:var(--xs);color:var(--tm);margin-top:var(--s2)" id="imgUploadStatus"></p>
+      </div>
+    </div>
     <div class="mfoot">
       <button class="btn bgh" onclick="closePM()">Cancel</button>
-      <button class="btn bp" onclick="saveProd()">Save Product</button>
+      <button class="btn bp" onclick="saveProd()" id="saveProductBtn">Save Product</button>
     </div>
   </div>
 </div>
@@ -962,7 +982,7 @@
   <div class="fgrid">
     <div>
       <p class="fbname">Radhika <span>Varieties</span></p>
-      <p class="fabout">Your trusted neighbourhood store — now online. We bring quality products across groceries, clothing, electronics, and more, right to your doorstep.</p>
+      <p class="fabout">Radhika Varieties — Karve Nagar, Pune's most trusted jewellery & variety store since 1997. We offer bridal jewellery, earrings, bangles, necklaces, Rakhi, bags and stationary at the best prices.</p>
       <div class="fsoc">
         <button class="fsocbtn" aria-label="Facebook">📘</button>
         <button class="fsocbtn" aria-label="Instagram">📸</button>
@@ -973,10 +993,12 @@
       <p class="fctitle">Shop</p>
       <ul class="flinks">
         <li><button onclick="go('products')">All Products</button></li>
-        <li><button onclick="go('products','Groceries')">Groceries</button></li>
-        <li><button onclick="go('products','Clothing')">Clothing</button></li>
-        <li><button onclick="go('products','Electronics')">Electronics</button></li>
-        <li><button onclick="go('products','Kitchen')">Kitchenware</button></li>
+        <li><button onclick="go('products','Jewellery')">Jewellery</button></li>
+        <li><button onclick="go('products','Earrings')">Earrings</button></li>
+        <li><button onclick="go('products','Bangles')">Bangles</button></li>
+        <li><button onclick="go('products','Necklace')">Necklaces</button></li>
+        <li><button onclick="go('products','Rakhi')">Rakhi</button></li>
+        <li><button onclick="go('products','Bags')">Bags</button></li>
       </ul>
     </div>
     <div>
@@ -998,8 +1020,9 @@
         <li><button>Privacy Policy</button></li>
       </ul>
       <div style="margin-top:var(--s4);font-size:var(--sm)">
-        <p style="color:rgba(255,255,255,.5);margin-bottom:4px">Call us</p>
+        <p style="color:rgba(255,255,255,.5);margin-bottom:4px">Visit us / Call</p>
         <a href="tel:+919876543210" style="color:var(--gp);font-weight:600">+91 98765 43210</a>
+        <p style="color:rgba(255,255,255,.4);font-size:var(--xs);margin-top:4px;line-height:1.5">Opp. Bijali Talim Mandir,<br>Karve Nagar, Pune 411052</p>
       </div>
     </div>
   </div>
@@ -1013,11 +1036,15 @@
 <script>
 'use strict';
 /* ─────────────────────────────────────────────────────────
-   CONFIG
-   Replace with your Apps Script /exec URL.
-   ⚠️  IMPORTANT: Use your actual deployed URL below.
+   CONFIG — API URL lives in js/api.js (separate file).
+   In this SPA (single-file) version we read API_URL from
+   the global window scope. If you include api.js as a
+    before this block, API_URL will
+   be available. Otherwise it falls back to the inline value.
 ───────────────────────────────────────────────────────── */
-const API = 'https://script.google.com/macros/s/AKfycbykIQFGFgsDQUiz2UHn3vMrlAI9_ZBimSDWTaIFPqlEovC4aOSj39TBWd9Y7EqcoqhB/exec'; // ✅ Your real URL
+const API = (typeof API_URL !== 'undefined')
+  ? API_URL
+  : 'https://script.google.com/macros/s/AKfycbwFgIJDRn3lfjBV4yrrkgKwe2wBk9MuuktqiZ_MxxgB-RU9_FHv6fXxARA1wl7_KlYr/exec';
 
 /* ─────────────────────────────────────────────────────────
    STATE
@@ -1036,17 +1063,17 @@ const PER_PAGE = 20;
 /* ─────────────────────────────────────────────────────────
    SESSION HELPERS
 ───────────────────────────────────────────────────────── */
-const tok  = () => localStorage.getItem('rv_tok');
-const usr  = () => { try { return JSON.parse(localStorage.getItem('rv_usr')); } catch { return null; } };
+const tok  = () => localStorage.getItem('rv_token');
+const usr  = () => { try { return JSON.parse(localStorage.getItem('rv_user')); } catch { return null; } };
 const logd = () => !!tok();
-const saveS = d  => { localStorage.setItem('rv_tok', d.token); localStorage.setItem('rv_usr', JSON.stringify(d.user)); };
-const clearS = () => { localStorage.removeItem('rv_tok'); localStorage.removeItem('rv_usr'); };
+const saveS = d  => { localStorage.setItem('rv_token', d.token); localStorage.setItem('rv_user', JSON.stringify(d.user)); };
+const clearS = () => { localStorage.removeItem('rv_token'); localStorage.removeItem('rv_user'); };
 
 /* ─────────────────────────────────────────────────────────
    LOCAL (GUEST) CART
 ───────────────────────────────────────────────────────── */
-const lCart  = () => { try { return JSON.parse(localStorage.getItem('rv_lc')) || []; } catch { return []; } };
-const sCart  = c  => localStorage.setItem('rv_lc', JSON.stringify(c));
+const lCart  = () => { try { return JSON.parse(localStorage.getItem('rv_cart')) || []; } catch { return []; } };
+const sCart  = c  => localStorage.setItem('rv_cart', JSON.stringify(c));
 const lCount = () => lCart().reduce((s, i) => s + (i.qty || 1), 0);
 
 /* ─────────────────────────────────────────────────────────
@@ -1104,53 +1131,48 @@ function toast(msg, type='') {
    This is the standard pattern recommended for Apps Script + GitHub Pages.
 ───────────────────────────────────────────────────────── */
 
-const isMock = () => !API || API.includes('YOUR_APPS_SCRIPT');
+/* isMock: returns true only when no real URL is configured */
+const isMock = () => {
+  const url = (typeof API !== 'undefined') ? API : '';
+  return !url || url.includes('YOUR_APPS_SCRIPT') || url.length < 30;
+};
 
-/* ── GET request — simple query string, no CORS issues ─── */
+/* ── GET request — query string, no preflight, no CORS block ── */
 async function apiG(params = {}) {
-  if (isMock()) return { success: false, _mock: true };
+  if (isMock()) { console.warn('[API] Not configured — edit API_URL in js/api.js'); return { success: false, _mock: true }; }
   try {
-    const qs  = new URLSearchParams(params).toString();
-    const url = `${API}?${qs}`;
-    console.log('[API GET]', url);
-    const res = await fetch(url, { redirect: 'follow' });
-    const txt = await res.text();
-    console.log('[API GET response]', txt.substring(0, 200));
+    const base = (typeof API !== 'undefined') ? API : API_URL;
+    const url  = base + '?' + new URLSearchParams(params).toString();
+    console.log('[GET]', params.action || '', url);
+    const res  = await fetch(url, { redirect: 'follow' });
+    const txt  = await res.text();
+    console.log('[GET ✓]', txt.slice(0, 120));
     return JSON.parse(txt);
-  } catch (err) {
-    console.error('[API GET error]', err.message);
-    return { success: false, error: err.message };
+  } catch (e) {
+    console.error('[GET ✗]', e.message);
+    return { success: false, error: e.message };
   }
 }
 
-/* ── POST request — URLSearchParams body (NO CORS preflight) ─
-   Why: fetch with Content-Type: application/json sends a CORS
-   "preflight" OPTIONS request first. Apps Script cannot respond
-   to OPTIONS, so the browser blocks the call.
-
-   Fix: send body as URLSearchParams → browser uses
-   application/x-www-form-urlencoded → no preflight needed.
-   Apps Script receives the JSON string in e.parameter.payload.
-─────────────────────────────────────────────────────────────── */
+/* ── POST request — URLSearchParams (NO preflight, NO CORS block)
+   Frontend sends: payload={"action":"register","name":"..."}
+   Apps Script reads: JSON.parse(e.parameter.payload)
+   NO Content-Type: application/json → NO preflight → NO block
+────────────────────────────────────────────────────────────── */
 async function apiP(body = {}) {
-  if (isMock()) return { success: false, _mock: true };
+  if (isMock()) { console.warn('[API] Not configured — edit API_URL in js/api.js'); return { success: false, _mock: true }; }
   try {
+    const base = (typeof API !== 'undefined') ? API : API_URL;
     const form = new URLSearchParams();
     form.append('payload', JSON.stringify(body));
-    console.log('[API POST] action:', body.action, '→', API);
-    const res = await fetch(API, {
-      method  : 'POST',
-      redirect: 'follow',
-      body    : form
-      // Do NOT set Content-Type manually — browser sets it to
-      // application/x-www-form-urlencoded automatically
-    });
-    const txt = await res.text();
-    console.log('[API POST response]', txt.substring(0, 300));
+    console.log('[POST]', body.action || '');
+    const res  = await fetch(base, { method: 'POST', redirect: 'follow', body: form });
+    const txt  = await res.text();
+    console.log('[POST ✓]', txt.slice(0, 200));
     return JSON.parse(txt);
-  } catch (err) {
-    console.error('[API POST error]', err.message);
-    return { success: false, error: err.message };
+  } catch (e) {
+    console.error('[POST ✗]', e.message);
+    return { success: false, error: e.message };
   }
 }
 
@@ -1158,11 +1180,20 @@ async function apiP(body = {}) {
    ROUTER
 ───────────────────────────────────────────────────────── */
 const authPages = ['cart','checkout','orders','profile'];
+const adminPages = ['admin'];
 
 function go(page, param) {
   if (authPages.includes(page) && !logd()) {
     toast('Please log in to continue.','er');
     page = 'login';
+  }
+  // Block admin page from non-admin users
+  if (adminPages.includes(page)) {
+    const u = usr();
+    if (!logd() || u?.role !== 'Admin') {
+      toast('Admin access only.','er');
+      page = 'home';
+    }
   }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const el = document.getElementById('pg-'+page);
@@ -1180,7 +1211,7 @@ function go(page, param) {
   if (page==='checkout') loadCO();
   if (page==='orders')   loadOrders();
   if (page==='profile')  loadProfile();
-  if (page==='admin')    loadAdminDB();
+  if (page==='admin')    { loadAdminDB(); }
 }
 
 window.addEventListener('popstate', e => { if (e.state) go(e.state.page, e.state.param); });
@@ -1196,7 +1227,13 @@ function updNav() {
   const l = logd(), u = usr();
   document.querySelectorAll('.ng').forEach(el => el.classList.toggle('hidden', l));
   document.querySelectorAll('.na').forEach(el => el.classList.toggle('hidden', !l));
-  if (u) { const n = document.getElementById('nun'); if (n) n.textContent = (u.name||'Account').split(' ')[0]; }
+  if (u) {
+    const n = document.getElementById('nun');
+    if (n) n.textContent = (u.name||'Account').split(' ')[0];
+    // Show Admin Panel link ONLY for Admin role
+    const adminBtn = document.getElementById('adminNavBtn');
+    if (adminBtn) adminBtn.style.display = (u.role === 'Admin') ? '' : 'none';
+  }
   updBadge();
 }
 
@@ -1272,18 +1309,21 @@ document.querySelectorAll('input[name="cat"]').forEach(r =>
 );
 
 const SAMPLE_PRODS = [
-  {ProductID:'P001',Name:'Premium Basmati Rice 5kg',Category:'Groceries',Price:420,SalePrice:520,Stock:50,emoji:'🛒'},
-  {ProductID:'P002',Name:'Cotton Kurti Set — Floral',Category:'Clothing',Price:699,SalePrice:999,Stock:12,emoji:'👗'},
-  {ProductID:'P003',Name:'Non-Stick Kadai 28cm',Category:'Kitchen',Price:1199,SalePrice:null,Stock:8,emoji:'🍳'},
-  {ProductID:'P004',Name:'Bluetooth Earbuds Pro',Category:'Electronics',Price:1499,SalePrice:2499,Stock:30,emoji:'📱'},
-  {ProductID:'P005',Name:'Almond Face Wash 150ml',Category:'Beauty',Price:299,SalePrice:399,Stock:100,emoji:'💄'},
-  {ProductID:'P006',Name:'Yoga Mat — Anti-Slip',Category:'Sports',Price:599,SalePrice:799,Stock:25,emoji:'⚽'},
-  {ProductID:'P007',Name:'Steel Tiffin Box Set',Category:'Kitchen',Price:449,SalePrice:599,Stock:40,emoji:'🍱'},
-  {ProductID:'P008',Name:'LED Desk Lamp',Category:'Home',Price:849,SalePrice:null,Stock:15,emoji:'💡'},
-  {ProductID:'P009',Name:'Handloom Cotton Saree',Category:'Clothing',Price:1299,SalePrice:1799,Stock:6,emoji:'🥻'},
-  {ProductID:'P010',Name:'Organic Turmeric Powder',Category:'Groceries',Price:149,SalePrice:199,Stock:200,emoji:'🌿'},
-  {ProductID:'P011',Name:'Smart Watch Basic',Category:'Electronics',Price:1999,SalePrice:3499,Stock:20,emoji:'⌚'},
-  {ProductID:'P012',Name:'Wooden Wall Clock',Category:'Home',Price:699,SalePrice:999,Stock:10,emoji:'🕐'},
+  {ProductID:'P001',Name:'Gold Plated Jhumka Earrings',Category:'Earrings',Price:299,SalePrice:499,Stock:50,emoji:'✨',Description:'Traditional jhumka earrings with gold plating. Festive & bridal wear.'},
+  {ProductID:'P002',Name:'Stone Studded Nose Pin',Category:'Nosepin',Price:99,SalePrice:null,Stock:100,emoji:'💫',Description:'Delicate nose pin with kundan stone setting. Fits all nose sizes.'},
+  {ProductID:'P003',Name:'Glass Bangle Set (12 pcs)',Category:'Bangles',Price:149,SalePrice:249,Stock:60,emoji:'🔮',Description:'Vibrant coloured glass bangles, set of 12. Size 2.4 & 2.6 available.'},
+  {ProductID:'P004',Name:'Kundan Necklace Set',Category:'Necklace',Price:799,SalePrice:1299,Stock:20,emoji:'📿',Description:'Bridal kundan necklace with matching earrings. Gold plated.'},
+  {ProductID:'P005',Name:'Designer Rakhi Set (5 pcs)',Category:'Rakhi',Price:249,SalePrice:399,Stock:200,emoji:'🧡',Description:'Premium handcrafted Rakhi set with roli chawal. Perfect for Rakshabandhan.'},
+  {ProductID:'P006',Name:'Ethnic Potli Bag',Category:'Bags',Price:349,SalePrice:599,Stock:30,emoji:'👜',Description:'Handcrafted potli bag with embroidery. Perfect for weddings & functions.'},
+  {ProductID:'P007',Name:'Floral Hoop Earrings',Category:'Earrings',Price:199,SalePrice:349,Stock:80,emoji:'✨',Description:'Light-weight floral hoop earrings. Daily wear collection.'},
+  {ProductID:'P008',Name:'Oxidised Silver Bangles',Category:'Bangles',Price:399,SalePrice:599,Stock:40,emoji:'🔮',Description:'Oxidised silver finish bangle set. Ethnic & contemporary design.'},
+  {ProductID:'P009',Name:'Pearl Necklace — Single Strand',Category:'Necklace',Price:599,SalePrice:null,Stock:15,emoji:'📿',Description:'Lustrous pearl necklace, single strand. 18 inch length.'},
+  {ProductID:'P010',Name:'Nath — Bridal Nose Ring',Category:'Nosepin',Price:349,SalePrice:499,Stock:25,emoji:'💫',Description:'Traditional Maharashtrian nath with pearl drops. Bridal special.'},
+  {ProductID:'P011',Name:'Rakhi Thali Gift Set',Category:'Rakhi',Price:499,SalePrice:799,Stock:50,emoji:'🧡',Description:'Complete Raksha Bandhan thali with Rakhi, roli, chawal, diyas & sweets box.'},
+  {ProductID:'P012',Name:'Tote Bag — Handloom Cotton',Category:'Bags',Price:249,SalePrice:null,Stock:45,emoji:'👜',Description:'Eco-friendly handloom cotton tote bag with zip. Multipurpose.'},
+  {ProductID:'P013',Name:'Notebook Set A5 — Pack of 4',Category:'Stationary',Price:199,SalePrice:299,Stock:100,emoji:'✏️',Description:'Premium ruled notebooks, 200 pages each. Smooth writing paper.'},
+  {ProductID:'P014',Name:'Antique Choker Necklace',Category:'Necklace',Price:899,SalePrice:1499,Stock:12,emoji:'📿',Description:'Antique gold finish choker with meenakari work. Bridal & festive.'},
+  {ProductID:'P015',Name:'Stud Earrings — Kundan',Category:'Earrings',Price:149,SalePrice:249,Stock:120,emoji:'✨',Description:'Simple kundan stud earrings. Perfect for daily wear and gifting.'},
 ];
 
 async function loadProds(cat) {
@@ -1379,10 +1419,10 @@ function resetF()  {
    PRODUCT DETAIL
 ───────────────────────────────────────────────────────── */
 const MOCK_DET = {
-  P001:{ProductID:'P001',Name:'Premium Basmati Rice 5kg',Category:'Groceries',Price:420,SalePrice:520,Stock:50,Description:'Long-grain aged basmati sourced from finest farms. Perfect for biryani, pulao, and daily cooking.',averageRating:4.5,reviews:[]},
-  P002:{ProductID:'P002',Name:'Cotton Kurti Set — Floral',Category:'Clothing',Price:699,SalePrice:999,Stock:12,Description:'Hand-block printed cotton kurti with dupatta. Breathable, comfortable fabric for all-day wear.',averageRating:4.8,reviews:[]},
-  P003:{ProductID:'P003',Name:'Non-Stick Kadai 28cm',Category:'Kitchen',Price:1199,SalePrice:null,Stock:8,Description:'Hard-anodised non-stick kadai with glass lid. Even heat, works on induction and gas stoves.',averageRating:4.3,reviews:[]},
-  P004:{ProductID:'P004',Name:'Bluetooth Earbuds Pro',Category:'Electronics',Price:1499,SalePrice:2499,Stock:30,Description:'40-hour playtime, active noise cancellation, IPX5 water resistant. iOS and Android compatible.',averageRating:4.6,reviews:[]},
+  P001:{ProductID:'P001',Name:'Gold Plated Jhumka Earrings',Category:'Earrings',Price:299,SalePrice:499,Stock:50,emoji:'✨',Description:'Traditional jhumka earrings with gold plating. Festive & bridal wear. Available in multiple colours.',averageRating:4.8,reviews:[{UserName:'Priya N.',Rating:5,Comment:'Beautiful quality! Exactly as shown.',Date:new Date().toISOString()},{UserName:'Sunita M.',Rating:4,Comment:'Very pretty, fast delivery.',Date:new Date().toISOString()}]},
+  P002:{ProductID:'P002',Name:'Stone Studded Nose Pin',Category:'Nosepin',Price:99,SalePrice:null,Stock:100,emoji:'💫',Description:'Delicate nose pin with kundan stone setting. Available in gold & silver tone. Fits all nose sizes.',averageRating:4.5,reviews:[]},
+  P003:{ProductID:'P003',Name:'Glass Bangle Set (12 pcs)',Category:'Bangles',Price:149,SalePrice:249,Stock:60,emoji:'🔮',Description:'Vibrant coloured glass bangles, set of 12. Available in sizes 2.4, 2.6 and 2.8.',averageRating:4.7,reviews:[{UserName:'Rekha S.',Rating:5,Comment:'Lovely colours! Great value.',Date:new Date().toISOString()}]},
+  P004:{ProductID:'P004',Name:'Kundan Necklace Set',Category:'Necklace',Price:799,SalePrice:1299,Stock:20,emoji:'📿',Description:'Bridal kundan necklace with matching earrings. Gold plated finish. Perfect for weddings & functions.',averageRating:4.9,reviews:[]},
 };
 
 async function loadDetail(id) {
@@ -1552,7 +1592,7 @@ function updCartSum(sub) {
   document.getElementById('sship').textContent = fmt(ship);
   document.getElementById('sgst').textContent  = fmt(gst);
   document.getElementById('stotv').textContent = fmt(total);
-  localStorage.setItem('rv_os', JSON.stringify({sub,ship,gst,disc:cartDisc,total}));
+  localStorage.setItem('rv_orderSummary', JSON.stringify({sub,ship,gst,disc:cartDisc,total}));
 }
 
 async function updCQ(id, qty) {
@@ -1580,7 +1620,7 @@ async function applyCoupon() {
    CHECKOUT
 ───────────────────────────────────────────────────────── */
 function loadCO() {
-  const os=JSON.parse(localStorage.getItem('rv_os')||'{}');
+  const os=JSON.parse(localStorage.getItem('rv_orderSummary')||'{}');
   document.getElementById('cosub').textContent  = os.sub   ? fmt(os.sub)   : '—';
   document.getElementById('coship').textContent = os.ship  ? fmt(os.ship)  : '—';
   document.getElementById('cogst').textContent  = os.gst   ? fmt(os.gst)   : '—';
@@ -1601,7 +1641,7 @@ async function placeOrder() {
   const r    = await apiP({action:'placeOrder',token:tok(),address:addr,paymentMethod:pay,couponCode});
   if (r._mock) { toast('Connect API to place orders.','er'); return; }
   if (r.success) {
-    localStorage.removeItem('rv_os'); couponCode=''; cartDisc=0;
+    localStorage.removeItem('rv_orderSummary'); couponCode=''; cartDisc=0;
     toast('Order placed! 🎉','ok');
     setTimeout(()=>go('orders'),1500);
   } else toast(r.message||'Order failed.','er');
@@ -1611,8 +1651,8 @@ async function placeOrder() {
    ORDERS
 ───────────────────────────────────────────────────────── */
 const MOCK_ORDERS = [
-  {OrderID:'ORD1001',Date:new Date().toISOString(),Status:'Delivered',Total:1618,PaymentMethod:'UPI',Address:'Priya Nair, 12 Rose Lane, Pune - 411001',items:[{ProductID:'P001',Qty:2,Price:420},{ProductID:'P002',Qty:1,Price:699}]},
-  {OrderID:'ORD1002',Date:new Date(Date.now()-86400000*3).toISOString(),Status:'Shipped',Total:1499,PaymentMethod:'COD',Address:'Priya Nair, 12 Rose Lane, Pune - 411001',items:[{ProductID:'P004',Qty:1,Price:1499}]},
+  {OrderID:'ORD1001',Date:new Date().toISOString(),Status:'Delivered',Total:897,PaymentMethod:'UPI',Address:'Priya Nair, 12 Rose Lane, Pune - 411001',items:[{ProductID:'P001',Qty:1,Price:299},{ProductID:'P003',Qty:4,Price:149}]},
+  {OrderID:'ORD1002',Date:new Date(Date.now()-86400000*3).toISOString(),Status:'Shipped',Total:799,PaymentMethod:'COD',Address:'Sunita Sharma, 45 MG Road, Nagpur - 440001',items:[{ProductID:'P004',Qty:1,Price:799}]},
 ];
 
 async function loadOrders() {
@@ -1676,7 +1716,7 @@ async function savePro() {
   if (!name) { toast('Name is required.','er'); return; }
   const r=await apiP({action:'updateProfile',token:tok(),name,mobile:mob,address:addr});
   toast(r._mock?'Connect API to save profile.':(r.message||'Profile updated.'), r.success||r._mock?'ok':'er');
-  if (r.success) { const u=usr(); if(u){u.name=name;u.mobile=mob;localStorage.setItem('rv_usr',JSON.stringify(u));updNav();} }
+  if (r.success) { const u=usr(); if(u){u.name=name;u.mobile=mob;localStorage.setItem('rv_user',JSON.stringify(u));updNav();} }
 }
 
 async function changePw() {
@@ -1695,43 +1735,313 @@ async function changePw() {
    ADMIN
 ───────────────────────────────────────────────────────── */
 function showAP(panel, btn) {
-  document.querySelectorAll('.adpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.adpanel').forEach(p => p.classList.remove('on'));
   document.getElementById('ap-'+panel).classList.add('on');
-  document.querySelectorAll('.adnl').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.adnl').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   if (panel==='db') loadAdminDB();
+  if (panel==='pr') loadAdminProducts();
+  if (panel==='or') loadAdminOrders();
+  if (panel==='cu') loadAdminCustomers();
 }
 
+/* ── Admin: Dashboard ──────────────────────────────────── */
 async function loadAdminDB() {
-  const r=await apiG({action:'dashboardStats',token:tok()});
-  if (!r.success||r._mock) { ['asTR','asTotalR'].forEach(id=>document.getElementById(id).textContent='₹—'); ['asTodO','asTotO','asPend','asProd','asLow','asCust'].forEach(id=>document.getElementById(id).textContent='—'); return; }
-  document.getElementById('asTR').textContent    = fmt(r.todayRevenue||0);
-  document.getElementById('asTotalR').textContent= fmt(r.totalRevenue||0);
-  document.getElementById('asTodO').textContent  = r.todayOrders;
-  document.getElementById('asTotO').textContent  = r.totalOrders;
-  document.getElementById('asPend').textContent  = r.pendingOrders;
-  document.getElementById('asProd').textContent  = r.totalProducts;
-  document.getElementById('asLow').textContent   = r.lowStock;
-  document.getElementById('asCust').textContent  = r.totalCustomers;
+  const r = await apiG({action:'dashboardStats', token:tok()});
+  if (r._mock) {
+    ['asTR','asTotalR'].forEach(id => document.getElementById(id).textContent = '₹—');
+    ['asTodO','asTotO','asPend','asProd','asLow','asCust'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  if (!r.success) { toast(r.message||'Failed to load dashboard.','er'); return; }
+  document.getElementById('asTR').textContent     = fmt(r.todayRevenue||0);
+  document.getElementById('asTotalR').textContent = fmt(r.totalRevenue||0);
+  document.getElementById('asTodO').textContent   = r.todayOrders   || 0;
+  document.getElementById('asTotO').textContent   = r.totalOrders   || 0;
+  document.getElementById('asPend').textContent   = r.pendingOrders || 0;
+  document.getElementById('asProd').textContent   = r.totalProducts || 0;
+  document.getElementById('asLow').textContent    = r.lowStock      || 0;
+  document.getElementById('asCust').textContent   = r.totalCustomers|| 0;
+  // Also load recent orders table
+  loadAdminOrders();
 }
 
-function openPM()  { editPID=null; ['fNm','fDs','fPr','fSp','fSk'].forEach(id=>document.getElementById(id).value=''); document.getElementById('fSt').value='Active'; document.getElementById('fFt').value='false'; document.getElementById('fCt').value=''; document.getElementById('pmtitle').textContent='Add Product'; document.getElementById('pm').classList.add('open'); }
+/* ── Admin: Load Products ──────────────────────────────── */
+async function loadAdminProducts() {
+  const tbody = document.getElementById('apb');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tm);padding:var(--s4)">Loading…</td></tr>';
+  const r = await apiG({action:'filterProducts', page:1, limit:100, token:tok()});
+  if (r._mock || !r.success) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tm)">Connect API — run setupSheets() first.</td></tr>';
+    return;
+  }
+  if (!r.products?.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--tm)">No products yet. Click + Add Product.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = r.products.map(p => {
+    const price = p.SalePrice || p.Price;
+    const img   = p.images?.[0] ? `<img src="${p.images[0]}" style="width:44px;height:44px;object-fit:cover;border-radius:4px">` : '<div style="width:44px;height:44px;background:var(--sf);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem">📦</div>';
+    return `<tr>
+      <td>${img}</td>
+      <td><strong>${p.Name}</strong></td>
+      <td>${p.Category}</td>
+      <td>${fmt(price)}${p.SalePrice?` <s style="color:var(--tm);font-size:var(--xs)">${fmt(p.Price)}</s>`:''}</td>
+      <td style="color:${p.Stock<5?'var(--er)':'inherit'};font-weight:${p.Stock<5?700:400}">${p.Stock}</td>
+      <td><span class="badge ${p.Status==='Active'?'b-ok':'b-er'}">${p.Status}</span></td>
+      <td>
+        <div style="display:flex;gap:var(--s2)">
+          <button class="btn bo bsm" onclick="editAdminProd('${p.ProductID}')">Edit</button>
+          <button class="btn bd bsm" onclick="deleteAdminProd('${p.ProductID}')">Del</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  adminProductsCache = r.products;
+}
+
+let adminProductsCache = [];
+
+function filterAP() {
+  const q = document.getElementById('apsch').value.toLowerCase();
+  document.querySelectorAll('#apb tr').forEach(tr => {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+async function editAdminProd(id) {
+  const p = adminProductsCache.find(x => x.ProductID === id);
+  if (!p) return;
+  editPID = id;
+  document.getElementById('pmtitle').textContent = 'Edit Product';
+  document.getElementById('fNm').value  = p.Name        || '';
+  document.getElementById('fDs').value  = p.Description || '';
+  document.getElementById('fCt').value  = p.Category    || '';
+  document.getElementById('fPr').value  = p.Price       || '';
+  document.getElementById('fSp').value  = p.SalePrice   || '';
+  document.getElementById('fSk').value  = p.Stock       || '';
+  document.getElementById('fSt').value  = p.Status      || 'Active';
+  document.getElementById('fFt').value  = String(p.Featured || false);
+  document.getElementById('pm').classList.add('open');
+}
+
+async function deleteAdminProd(id) {
+  if (!confirm('Mark this product as inactive?')) return;
+  const r = await apiP({action:'deleteProduct', token:tok(), productId:id});
+  toast(r.message || 'Done.', r.success ? 'ok' : 'er');
+  if (r.success) loadAdminProducts();
+}
+
+/* ── Admin: Load Orders ──────────────────────────────── */
+async function loadAdminOrders() {
+  const tbody = document.getElementById('aorb');
+  if (tbody) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--tm);padding:var(--s4)">Loading…</td></tr>';
+  }
+  const tbody2 = document.getElementById('aob');
+  if (tbody2) {
+    tbody2.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--tm);padding:var(--s4)">Loading…</td></tr>';
+  }
+
+  // Admin fetches all orders — reuse getOrders with admin token
+  const r = await apiG({action:'getOrders', token:tok()});
+  if (r._mock || !r.success) {
+    const msg = '<tr><td colspan="6" style="text-align:center;color:var(--tm)">Connect API — run setupSheets() first.</td></tr>';
+    if (tbody)  tbody.innerHTML  = msg;
+    if (tbody2) tbody2.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--tm)">No orders yet.</td></tr>';
+    return;
+  }
+
+  const orders = r.orders || [];
+  if (!orders.length) {
+    const empty = '<tr><td colspan="6" style="text-align:center;color:var(--tm)">No orders yet.</td></tr>';
+    if (tbody)  tbody.innerHTML = empty;
+    if (tbody2) tbody2.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--tm)">No orders yet.</td></tr>';
+    return;
+  }
+
+  const statuses = ['Pending','Confirmed','Shipped','Out for Delivery','Delivered','Cancelled'];
+
+  // Full orders table
+  if (tbody) {
+    tbody.innerHTML = orders.map(o => `
+      <tr>
+        <td><strong>#${o.OrderID}</strong></td>
+        <td>${fmtD(o.Date)}</td>
+        <td>${fmt(o.Total)}</td>
+        <td>${o.PaymentMethod||'COD'}</td>
+        <td>${sbadge(o.Status)}</td>
+        <td>
+          <select onchange="changeAdminOrderStatus('${o.OrderID}',this.value)"
+            style="font-size:var(--xs);padding:3px 6px;border:1px solid var(--br);border-radius:4px">
+            ${statuses.map(s => `<option ${s===o.Status?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+      </tr>`).join('');
+  }
+
+  // Dashboard recent orders (5 max)
+  if (tbody2) {
+    tbody2.innerHTML = orders.slice(0,5).map(o => `
+      <tr>
+        <td><strong>#${o.OrderID}</strong></td>
+        <td>${fmtD(o.Date)}</td>
+        <td>${fmt(o.Total)}</td>
+        <td>${sbadge(o.Status)}</td>
+        <td>
+          <select onchange="changeAdminOrderStatus('${o.OrderID}',this.value)"
+            style="font-size:var(--xs);padding:3px 6px;border:1px solid var(--br);border-radius:4px">
+            ${statuses.map(s => `<option ${s===o.Status?'selected':''}>${s}</option>`).join('')}
+          </select>
+        </td>
+      </tr>`).join('');
+  }
+}
+
+async function changeAdminOrderStatus(orderId, status) {
+  const r = await apiP({action:'changeOrderStatus', token:tok(), orderId, status});
+  toast(r.message || 'Status updated.', r.success ? 'ok' : 'er');
+}
+
+/* ── Admin: Load Customers ───────────────────────────── */
+async function loadAdminCustomers() {
+  const tbody = document.getElementById('acb');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--tm);padding:var(--s4)">Loading…</td></tr>';
+  const r = await apiG({action:'getCustomers', token:tok()});
+  if (r._mock || !r.success) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--tm)">Connect API — run setupSheets() first.</td></tr>';
+    return;
+  }
+  if (!r.customers?.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--tm)">No customers yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = r.customers.map(c => `
+    <tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:var(--s3)">
+          <div style="width:36px;height:36px;border-radius:50%;background:var(--c1);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--sm);flex-shrink:0">
+            ${(c.Name||'?')[0].toUpperCase()}
+          </div>
+          <strong>${c.Name||'—'}</strong>
+        </div>
+      </td>
+      <td>${c.Email||'—'}</td>
+      <td>${c.Mobile||'—'}</td>
+      <td>${c.CreatedAt ? fmtD(c.CreatedAt) : '—'}</td>
+    </tr>`).join('');
+}
+
+function openPM() {
+  editPID = null;
+  ['fNm','fDs','fPr','fSp','fSk'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fSt').value    = 'Active';
+  document.getElementById('fFt').value    = 'false';
+  document.getElementById('fCt').value    = '';
+  document.getElementById('pmtitle').textContent = 'Add Product';
+  // Clear image upload
+  document.getElementById('fImg').value   = '';
+  document.getElementById('imgPreview').style.display    = 'none';
+  document.getElementById('imgPlaceholder').style.display = '';
+  document.getElementById('imgUploadStatus').textContent  = '';
+  window._pendingImgFile = null;
+  document.getElementById('pm').classList.add('open');
+}
 function closePM() { document.getElementById('pm').classList.remove('open'); }
 function closePMout(e) { if(e.target===document.getElementById('pm')) closePM(); }
 
+/* ── Image preview when file selected ───────────────── */
+function previewImg(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('Image must be under 5MB.','er'); input.value=''; return; }
+  window._pendingImgFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('imgPreviewEl').src    = e.target.result;
+    document.getElementById('imgPreview').style.display    = '';
+    document.getElementById('imgPlaceholder').style.display = 'none';
+    document.getElementById('imgUploadStatus').textContent  = '✅ ' + file.name + ' ready to upload';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── Upload image to Drive via Apps Script ──────────── */
+async function uploadProductImage(productId) {
+  const file = window._pendingImgFile;
+  if (!file) return null;
+
+  document.getElementById('imgUploadStatus').textContent = '⏳ Uploading photo…';
+
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = async e => {
+      const base64 = e.target.result.split(',')[1]; // strip data:image/...;base64,
+      const r = await apiP({
+        action   : 'uploadProductImage',
+        token    : tok(),
+        productId,
+        imageData: base64,
+        mimeType : file.type,
+        fileName : file.name
+      });
+      if (r.success) {
+        document.getElementById('imgUploadStatus').textContent = '✅ Photo uploaded!';
+        window._pendingImgFile = null;
+        resolve(r.imageUrl);
+      } else {
+        document.getElementById('imgUploadStatus').textContent = '❌ Upload failed: ' + (r.message||'Try again');
+        resolve(null);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 async function saveProd() {
-  const d={name:document.getElementById('fNm').value.trim(),description:document.getElementById('fDs').value.trim(),category:document.getElementById('fCt').value,price:document.getElementById('fPr').value,salePrice:document.getElementById('fSp').value||'',stock:document.getElementById('fSk').value,status:document.getElementById('fSt').value,featured:document.getElementById('fFt').value==='true'};
-  if (!d.name||!d.price||!d.stock) { toast('Name, price and stock required.','er'); return; }
-  const body=editPID?{action:'updateProduct',token:tok(),productId:editPID,...d}:{action:'addProduct',token:tok(),...d};
-  const r=await apiP(body);
-  toast(r._mock?'Connect API to manage products.':(r.message||'Saved.'), r.success||r._mock?'ok':'er');
-  if (r.success) closePM();
+  const d = {
+    name       : document.getElementById('fNm').value.trim(),
+    description: document.getElementById('fDs').value.trim(),
+    category   : document.getElementById('fCt').value,
+    price      : document.getElementById('fPr').value,
+    salePrice  : document.getElementById('fSp').value || '',
+    stock      : document.getElementById('fSk').value,
+    status     : document.getElementById('fSt').value,
+    featured   : document.getElementById('fFt').value === 'true'
+  };
+  if (!d.name || !d.price || !d.stock) { toast('Name, price and stock are required.','er'); return; }
+
+  const body = editPID
+    ? {action:'updateProduct', token:tok(), productId:editPID, ...d}
+    : {action:'addProduct',    token:tok(), ...d};
+
+  const r = await apiP(body);
+  if (r._mock) { toast('Connect API to manage products.','er'); return; }
+  toast(r.message || 'Saved.', r.success ? 'ok' : 'er');
+  if (r.success) {
+    // If there's a pending image, upload it now
+    const productId = r.productId || editPID;
+    if (window._pendingImgFile && productId) {
+      document.getElementById('saveProductBtn').disabled = true;
+      await uploadProductImage(productId);
+      document.getElementById('saveProductBtn').disabled = false;
+    }
+    closePM();
+    loadAdminProducts();
+  }
 }
 
 async function saveSettings() {
-  const settings=[{key:'StoreName',value:document.getElementById('ssn').value.trim()},{key:'AdminEmail',value:document.getElementById('sse').value.trim()},{key:'Shipping',value:document.getElementById('ssship').value},{key:'GST',value:document.getElementById('ssgst').value},{key:'UPI',value:document.getElementById('ssupi').value.trim()}];
-  const r=await apiP({action:'updateSettings',token:tok(),settings});
-  toast(r._mock?'Connect API to save settings.':(r.message||'Settings saved.'), r.success||r._mock?'ok':'er');
+  const settings = [
+    { key: 'StoreName',  value: document.getElementById('ssn').value.trim() },
+    { key: 'AdminEmail', value: document.getElementById('sse').value.trim() },
+    { key: 'Shipping',   value: document.getElementById('ssship').value },
+    { key: 'GST',        value: document.getElementById('ssgst').value },
+    { key: 'UPI',        value: document.getElementById('ssupi').value.trim() }
+  ];
+  const r = await apiP({ action: 'updateSettings', token: tok(), settings });
+  if (r._mock) { toast('Connect API to save settings.', 'er'); return; }
+  toast(r.message || 'Settings saved.', r.success ? 'ok' : 'er');
 }
 
 function filterAP() {
@@ -1757,6 +2067,24 @@ async function subscribe() {
   toast(r._mock?'Thanks! We\'ll keep you updated. 🪷':(r.message||'Subscribed!'),'ok');
   el.value='';
 }
+
+/* ── Drag & drop for image upload ───────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+  const zone = document.getElementById('imgDropZone');
+  if (!zone) return;
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) { toast('Please drop an image file.','er'); return; }
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('fImg').files = dt.files;
+    previewImg(document.getElementById('fImg'));
+  });
+});
 
 /* ─────────────────────────────────────────────────────────
    KEYBOARD ACCESSIBILITY
