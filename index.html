@@ -1185,10 +1185,10 @@ function toast(msg, type='') {
 //           ↑ paste your /exec URL here — keep the quotes
 
 /* ── Is API ready? ────────────────────────────────────────── */
-const isMock = () => !API || API.includes("YOUR_APPS_SCRIPT");
+/*const isMock = () => !API || API.includes("YOUR_APPS_SCRIPT");
 
 /* ── GET — query string, no CORS preflight ─────────────────── */
-async function apiG(params = {}) {
+/*async function apiG(params = {}) {
   if (isMock()) {
     console.warn("[SPA] API not set — fill in API constant above");
     return { success: false, _mock: true };
