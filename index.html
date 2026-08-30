@@ -1035,16 +1035,62 @@
 </footer>
 <script>
 'use strict';
-/* ─────────────────────────────────────────────────────────
-   CONFIG — API URL lives in js/api.js (separate file).
-   In this SPA (single-file) version we read API_URL from
-   the global window scope. If you include api.js as a
-    before this block, API_URL will
-   be available. Otherwise it falls back to the inline value.
-───────────────────────────────────────────────────────── */
-const API = (typeof API_URL !== 'undefined')
-  ? API_URL
-  : 'https://script.google.com/macros/s/AKfycbwFgIJDRn3lfjBV4yrrkgKwe2wBk9MuuktqiZ_MxxgB-RU9_FHv6fXxARA1wl7_KlYr/exec';
+/* ══════════════════════════════════════════════════════════
+   API CONFIG — Radhika Varieties
+   ✏️  After deploying Apps Script, paste your /exec URL below
+   ══════════════════════════════════════════════════════════ */
+const API = "YOUR_APPS_SCRIPT_EXEC_URL_HERE";
+//           ↑ Replace with: https://script.google.com/macros/s/.../exec
+
+/* ── Is API configured? ───────────────────────────────────── */
+const isMock = () => !API || API.includes("YOUR_APPS_SCRIPT");
+
+/* ── GET — query string params, no CORS preflight ───────────── */
+async function apiG(params = {}) {
+  if (isMock()) {
+    console.warn("[SPA] API_URL not set. Edit the API constant above.");
+    return { success: false, _mock: true };
+  }
+  try {
+    const url = API + "?" + new URLSearchParams(params).toString();
+    console.log("[GET]", params.action || "");
+    const res = await fetch(url, { redirect: "follow" });
+    const txt = await res.text();
+    console.log("[GET ✓]", txt.slice(0, 150));
+    return JSON.parse(txt);
+  } catch (err) {
+    console.error("[GET ✗]", err.message);
+    return { success: false, error: err.message };
+  }
+}
+
+/* ── POST — URLSearchParams body, no CORS preflight ──────────
+   Browser sends: Content-Type: application/x-www-form-urlencoded
+   No preflight → No CORS block → Apps Script receives it fine.
+   Apps Script reads body via: JSON.parse(e.parameter.payload)
+───────────────────────────────────────────────────────────── */
+async function apiP(body = {}) {
+  if (isMock()) {
+    console.warn("[SPA] API_URL not set. Edit the API constant above.");
+    return { success: false, _mock: true };
+  }
+  try {
+    const form = new URLSearchParams();
+    form.append("payload", JSON.stringify(body));
+    console.log("[POST]", body.action || "");
+    const res = await fetch(API, {
+      method  : "POST",
+      redirect: "follow",
+      body    : form
+    });
+    const txt = await res.text();
+    console.log("[POST ✓]", txt.slice(0, 200));
+    return JSON.parse(txt);
+  } catch (err) {
+    console.error("[POST ✗]", err.message);
+    return { success: false, error: err.message };
+  }
+}
 
 /* ─────────────────────────────────────────────────────────
    STATE
@@ -1131,48 +1177,62 @@ function toast(msg, type='') {
    This is the standard pattern recommended for Apps Script + GitHub Pages.
 ───────────────────────────────────────────────────────── */
 
-/* isMock: returns true only when no real URL is configured */
-const isMock = () => {
-  const url = (typeof API !== 'undefined') ? API : '';
-  return !url || url.includes('YOUR_APPS_SCRIPT') || url.length < 30;
-};
+/* ══════════════════════════════════════════════════════════
+   API CONFIG — Radhika Varieties
+   ✏️  CHANGE THE URL BELOW after each new Apps Script deploy
+   ══════════════════════════════════════════════════════════ */
+const API = "https://script.google.com/macros/s/AKfycbykIQFGFgsDQUiz2UHn3vMrlAI9_ZBimSDWTaIFPqlEovC4aOSj39TBWd9Y7EqcoqhB/exec";
+//           ↑ paste your /exec URL here — keep the quotes
 
-/* ── GET request — query string, no preflight, no CORS block ── */
+/* ── Is API ready? ────────────────────────────────────────── */
+const isMock = () => !API || API.includes("YOUR_APPS_SCRIPT");
+
+/* ── GET — query string, no CORS preflight ─────────────────── */
 async function apiG(params = {}) {
-  if (isMock()) { console.warn('[API] Not configured — edit API_URL in js/api.js'); return { success: false, _mock: true }; }
+  if (isMock()) {
+    console.warn("[SPA] API not set — fill in API constant above");
+    return { success: false, _mock: true };
+  }
   try {
-    const base = (typeof API !== 'undefined') ? API : API_URL;
-    const url  = base + '?' + new URLSearchParams(params).toString();
-    console.log('[GET]', params.action || '', url);
-    const res  = await fetch(url, { redirect: 'follow' });
-    const txt  = await res.text();
-    console.log('[GET ✓]', txt.slice(0, 120));
+    const url = API + "?" + new URLSearchParams(params).toString();
+    console.log("[GET]", params.action || "", url);
+    const res = await fetch(url, { redirect: "follow" });
+    const txt = await res.text();
+    console.log("[GET ✓]", txt.slice(0, 150));
     return JSON.parse(txt);
-  } catch (e) {
-    console.error('[GET ✗]', e.message);
-    return { success: false, error: e.message };
+  } catch (err) {
+    console.error("[GET ✗]", err.message);
+    return { success: false, error: err.message };
   }
 }
 
-/* ── POST request — URLSearchParams (NO preflight, NO CORS block)
-   Frontend sends: payload={"action":"register","name":"..."}
+/* ── POST — URLSearchParams body (NO preflight, NO CORS block)
+   Why: JSON Content-Type triggers CORS preflight → Apps Script
+   ignores OPTIONS → browser blocks request.
+   Fix: send as form-urlencoded → no preflight needed.
    Apps Script reads: JSON.parse(e.parameter.payload)
-   NO Content-Type: application/json → NO preflight → NO block
 ────────────────────────────────────────────────────────────── */
 async function apiP(body = {}) {
-  if (isMock()) { console.warn('[API] Not configured — edit API_URL in js/api.js'); return { success: false, _mock: true }; }
+  if (isMock()) {
+    console.warn("[SPA] API not set — fill in API constant above");
+    return { success: false, _mock: true };
+  }
   try {
-    const base = (typeof API !== 'undefined') ? API : API_URL;
     const form = new URLSearchParams();
-    form.append('payload', JSON.stringify(body));
-    console.log('[POST]', body.action || '');
-    const res  = await fetch(base, { method: 'POST', redirect: 'follow', body: form });
-    const txt  = await res.text();
-    console.log('[POST ✓]', txt.slice(0, 200));
+    form.append("payload", JSON.stringify(body));
+    console.log("[POST]", body.action || "");
+    const res = await fetch(API, {
+      method  : "POST",
+      redirect: "follow",
+      body    : form
+      // ← No Content-Type override → browser uses form-urlencoded → no preflight
+    });
+    const txt = await res.text();
+    console.log("[POST ✓]", txt.slice(0, 200));
     return JSON.parse(txt);
-  } catch (e) {
-    console.error('[POST ✗]', e.message);
-    return { success: false, error: e.message };
+  } catch (err) {
+    console.error("[POST ✗]", err.message);
+    return { success: false, error: err.message };
   }
 }
 
