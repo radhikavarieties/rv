@@ -1439,30 +1439,43 @@ async function loadProds(cat) {
 }
 
 function prodCardH(p) {
-  const price = p.SalePrice ? p.SalePrice : p.Price;
-  const ori   = p.SalePrice ? p.Price : null;
-  const inStk = (p.Stock||0) > 0;
-  const imgEl = p.images?.[0]
-    ? `<img src="${p.images[0]}" alt="${p.Name}" loading="lazy">`
-    : (p.emoji||'📦');
-  const bdg   = ori ? `<span class="pbadge pbsale">Sale</span>` : `<span class="pbadge pbnew">New</span>`;
-  const save  = ori ? `<p class="psave">You save ${fmt(ori-price)} (${Math.round((1-price/ori)*100)}% off)</p>`
-                    : `<p class="psave" style="color:var(--tm)">Free delivery available</p>`;
+  const price = p.SalePrice ? Number(p.SalePrice) : Number(p.Price);
+  const ori   = p.SalePrice ? Number(p.Price) : null;
+  const inStk = (p.Stock || 0) > 0;
+
+  // lh3.googleusercontent.com/d/{id} is the reliable public Drive image URL
+  const hasImg = p.images && p.images[0];
+  const imgEl  = hasImg
+    ? `<img src="${p.images[0]}" alt="${p.Name}" loading="lazy"
+         style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"
+         onerror="this.style.display='none';this.parentNode.querySelector('.fe').style.display='flex'">`
+    : '';
+  const emojiEl = `<span class="fe" style="display:${hasImg?'none':'flex'};position:absolute;inset:0;align-items:center;justify-content:center;font-size:2.5rem">${p.emoji||'📦'}</span>`;
+  const bdg  = ori ? `<span class="pbadge pbsale">Sale</span>` : `<span class="pbadge pbnew">New</span>`;
+  const save = ori
+    ? `<p class="psave">You save ${fmt(ori-price)} (${Math.round((1-price/ori)*100)}% off)</p>`
+    : `<p class="psave" style="color:var(--tm)">Free delivery</p>`;
+
   return `
   <article class="pc">
-    <div class="piw">${imgEl}${bdg}<button class="pwish" onclick="toggleWish(this)" aria-label="Wishlist">♡</button></div>
+    <div class="piw" style="position:relative">
+      ${imgEl}${emojiEl}${bdg}
+      <button class="pwish" onclick="toggleWish(this)" aria-label="Wishlist">♡</button>
+    </div>
     <div class="pb">
       <p class="pcat">${p.Category}</p>
       <h3><span class="pname" onclick="go('product','${p.ProductID}')">${p.Name}</span></h3>
-      <div class="ppricing"><span class="pprice">${fmt(price)}</span>${ori?`<span class="pori">${fmt(ori)}</span>`:''}</div>
+      <div class="ppricing">
+        <span class="pprice">${fmt(price)}</span>
+        ${ori ? `<span class="pori">${fmt(ori)}</span>` : ''}
+      </div>
       ${save}
       <button class="btn bp pcta" onclick="addToCart(this,'${p.ProductID}')" ${!inStk?'disabled':''}>
-        ${inStk?'Add to Cart':'Out of Stock'}
+        ${inStk ? 'Add to Cart' : 'Out of Stock'}
       </button>
     </div>
   </article>`;
 }
-
 function applyF()  { prodPage=1; loadProds(); }
 function resetF()  {
   document.querySelectorAll('input[name="cat"]')[0].checked=true;
@@ -1525,13 +1538,14 @@ async function loadDetail(id) {
 
   // Gallery
   const gm=document.getElementById('gmain'), gt=document.getElementById('gthumbs');
-  if (p.images?.length) {
-    gm.innerHTML=`<img src="${p.images[0]}" alt="${p.Name}">`;
-    gt.innerHTML=p.images.map((img,i)=>`
+  if (p.images && p.images.length > 0) {
+    gm.innerHTML = `<img src="${p.images[0]}" alt="${p.Name}" style="width:100%;height:100%;object-fit:cover"
+      onerror="this.style.display='none';this.parentNode.textContent='${p.emoji||'📦'}'">`;
+    gt.innerHTML = p.images.map((img, i) => `
       <div class="gthumb ${i===0?'on':''}" onclick="selThumb('${img}',this)">
-        <img src="${img}" alt="">
+        <img src="${img}" alt="" style="width:100%;height:100%;object-fit:cover">
       </div>`).join('');
-  } else { gm.textContent=p.emoji||'📦'; gt.innerHTML=''; }
+  } else { gm.textContent = p.emoji||'📦'; gt.innerHTML = ''; }
 
   // Rating + reviews
   const avg=p.averageRating||4.5;
@@ -1624,7 +1638,7 @@ function renderCart(r) {
   const sm=document.getElementById('csum');
   el.innerHTML=r.items.map(item=>`
     <div class="ci" id="ci-${item.productId}">
-      <div class="cimg">${item.image?`<img src="${item.image}" alt="">`:'📦'}</div>
+      <div class="cimg">${item.image ? `<img src="${item.image}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:var(--rm)" onerror="this.style.display='none'">` : '📦'}</div>
       <div>
         <div class="cin" onclick="go('product','${item.productId}')">${item.name}</div>
         <div class="cip">${fmt(item.price)} each</div>
@@ -1838,7 +1852,10 @@ async function loadAdminProducts() {
   }
   tbody.innerHTML = r.products.map(p => {
     const price = p.SalePrice || p.Price;
-    const img   = p.images?.[0] ? `<img src="${p.images[0]}" style="width:44px;height:44px;object-fit:cover;border-radius:4px">` : '<div style="width:44px;height:44px;background:var(--sf);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:1.3rem">📦</div>';
+    const imgSrc = p.images && p.images[0] ? p.images[0] : null;
+    const img    = imgSrc
+      ? `<img src="${imgSrc}" style="width:44px;height:44px;object-fit:cover;border-radius:4px" onerror="this.parentNode.innerHTML='<span style=font-size:1.3rem>📦</span>'">`
+      : `<span style="font-size:1.3rem">📦</span>`;
     return `<tr>
       <td>${img}</td>
       <td><strong>${p.Name}</strong></td>
