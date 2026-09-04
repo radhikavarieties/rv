@@ -1475,8 +1475,8 @@ function prodCardH(p) {
     ? `<p class="psave">You save ${fmt(ori-price)} (${Math.round((1-price/ori)*100)}% off)</p>`
     : `<p class="psave" style="color:var(--tm)">Free delivery</p>`;
 
-  return
-  article class="pc"
+  return `
+  <article class="pc">
     <div class="piw" style="position:relative">
       ${imgEl}${emojiEl}${bdg}
       <button class="pwish" onclick="toggleWish(this)" aria-label="Wishlist">♡</button>
