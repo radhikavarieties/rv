@@ -480,7 +480,7 @@
 <div id="tw" aria-live="polite"></div>
 
 <!-- ANNOUNCEMENT -->
-<div class="ann">🧡 <strong>Ganpati Festive Collection Collection is Live!</strong> — Upto 40% off on Jewellery & Ganpati Festive Collection. Free delivery above ₹499. | Est. 1997 — Karve Nagar, Pune</div>
+<div class="ann">🧡 <strong>Ganpati Festive Collection & Gauri Jewellery is Live!</strong> — Upto 40% off on Jewellery & Ganpati Festive Collection. | Est. 1997 — Karve Nagar, Pune</div>
 
 <!-- NAVBAR -->
 <nav class="nav" id="nav" aria-label="Main navigation">
@@ -536,7 +536,7 @@
         <p class="hsub">Bridal sets, ethnic earrings, bangles, necklaces, Ganpati Festive Collection & more — from Karve Nagar, Pune to your doorstep.</p>
         <div class="hsearch"><label for="hs" class="sr">Search</label><input id="hs" type="search" placeholder="What are you looking for today?" autocomplete="off"><button onclick="doSearch()">Search</button></div>
         <div class="hpills">
-          <span class="hpill">🚚 Free Delivery ₹499+</span>
+         <!-- <span class="hpill">🚚 Free Delivery ₹499+</span> -->
           <span class="hpill">💍 Genuine Quality</span>
           <span class="hpill">🔒 Secure Payments</span>
         </div>
@@ -577,7 +577,7 @@
 
   <div class="sari-sm" aria-hidden="true"></div>
 
-  <section class="sec sec-alt"><div class="w">
+<!--  <section class="sec sec-alt"><div class="w">
     <div class="sh">
       <div><span class="seye">Bestsellers from Radhika Varieties</span><h2 class="stitle">Featured <span>Products</span></h2></div>
       <button class="btn bgh" onclick="go('products')">Browse All →</button>
@@ -588,7 +588,7 @@
       <article class="pc"><div class="piw" style="background:var(--gp)">📿<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Necklace</p><h3><span class="pname" onclick="go('product','P004')">Kundan Necklace Set</span></h3><div class="ppricing"><span class="pprice">₹799</span><span class="pori">₹1,299</span></div><p class="psave">You save ₹500 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P004')">Add to Cart</button></div></article>
       <article class="pc"><div class="piw" style="background:var(--sf)">🧡<span class="pbadge pbnew">Festive</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Ganpati Festive Collection</p><h3><span class="pname" onclick="go('product','P005')">Designer Ganpati Festive Collection Set (5 pcs)</span></h3><div class="ppricing"><span class="pprice">₹249</span><span class="pori">₹399</span></div><p class="psave">You save ₹150 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P005')">Add to Cart</button></div></article>
     </div>
-  </div></section>
+  </div></section> -->
 
   <div class="sari-sm" aria-hidden="true"></div>
 
@@ -605,7 +605,7 @@
   </div></section>
 
   <div class="tbar"><div class="tgrid">
-    <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499 across Pune & India.</p></div></div>
+  <!--  <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499 across Pune & India.</p></div></div> -->
     <div class="ti"><div class="tico">💍</div><div><p class="tit">Genuine Quality</p><p class="tis">Gold plated & certified jewellery since 1997.</p></div></div>
     <div class="ti"><div class="tico">🔒</div><div><p class="tit">Secure Payments</p><p class="tis">UPI, cards, net banking — 100% safe.</p></div></div>
     <div class="ti"><div class="tico">🪷</div><div><p class="tit">Since 1997</p><p class="tis">Trusted by Pune families for 25+ years.</p></div></div>
@@ -1473,7 +1473,7 @@ function prodCardH(p) {
   const bdg  = ori ? `<span class="pbadge pbsale">Sale</span>` : `<span class="pbadge pbnew">New</span>`;
   const save = ori
     ? `<p class="psave">You save ${fmt(ori-price)} (${Math.round((1-price/ori)*100)}% off)</p>`
-    : `<p class="psave" style="color:var(--tm)">Free delivery</p>`;
+  //  : `<p class="psave" style="color:var(--tm)">Free delivery</p>`; 
 
   return `
   <article class="pc">
