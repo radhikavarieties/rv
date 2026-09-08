@@ -468,6 +468,16 @@
       .ci{grid-template-columns:64px 1fr;}.csub{grid-column:2;}
     }
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;}}
+    /* Billing / POS responsive */
+    @media(max-width:768px){
+      #pg-billing .w > div > div:first-child { grid-column: 1; }
+      #pg-billing [style*="grid-template-columns:1fr 380px"]{ grid-template-columns:1fr!important; }
+    }
+    @media print{
+      .nav,.ann,.sari,.sari-sm,.footer,#tw,#ldr,.page:not(#pg-billing){ display:none!important; }
+      #pg-billing .w > div > div:last-child{ display:none!important; }
+      body{ background:#fff; }
+    }
 
     /* ── Image upload zone ───────────────────────────────── */
     #imgDropZone:hover{border-color:var(--g)!important;background:var(--sf);}
@@ -480,7 +490,7 @@
 <div id="tw" aria-live="polite"></div>
 
 <!-- ANNOUNCEMENT -->
-<div class="ann"> <strong></strong>Est. 1997 — Karve Nagar, Pune</div>
+<div class="ann">🧡 <strong>Rakhi Collection is Live!</strong> — Upto 40% off on Jewellery & Rakhi. Free delivery above ₹499. | Est. 1997 — Karve Nagar, Pune</div>
 
 <!-- NAVBAR -->
 <nav class="nav" id="nav" aria-label="Main navigation">
@@ -516,6 +526,7 @@
           <button onclick="go('profile');cdrop()">👤 My Profile</button>
           <button onclick="go('orders');cdrop()">📦 My Orders</button>
           <button id="adminNavBtn" onclick="go('admin');cdrop()" style="display:none">🔧 Admin Panel</button>
+          <button id="billingNavBtn" onclick="go('billing');cdrop()" style="display:none">🧾 In-Store Billing</button>
           <hr><button onclick="doLogout()">🚪 Log Out</button>
         </div>
       </span>
@@ -533,18 +544,18 @@
       <div>
         <span class="heye">🪷 Since 1997 — Trusted by Pune families</span>
         <h1 class="htitle" id="ht">Traditional jewellery<br><em>modern hearts love.</em></h1>
-        <p class="hsub">Bridal sets, ethnic earrings, bangles, necklaces, & more — from Karve Nagar, Pune to your doorstep.</p>
+        <p class="hsub">Bridal sets, ethnic earrings, bangles, necklaces, Rakhi & more — from Karve Nagar, Pune to your doorstep.</p>
         <div class="hsearch"><label for="hs" class="sr">Search</label><input id="hs" type="search" placeholder="What are you looking for today?" autocomplete="off"><button onclick="doSearch()">Search</button></div>
         <div class="hpills">
-          <span class="hpill"> </span>
+          <span class="hpill">🚚 Free Delivery ₹499+</span>
           <span class="hpill">💍 Genuine Quality</span>
-          <span class="hpill"> </span>
+          <span class="hpill">🔒 Secure Payments</span>
         </div>
       </div>
       <div class="hvis" aria-hidden="true">
         <button class="hcard" onclick="go('products','Jewellery')"><span class="hci">💍</span><span class="hcl">Jewellery</span><span class="hcs">Bridal & festive</span></button>
         <button class="hcard" onclick="go('products','Earrings')"><span class="hci">✨</span><span class="hcl">Earrings</span><span class="hcs">New arrivals</span></button>
-        <button class="hcard" onclick="go('products','Rakhi')"><span class="hci"></span><span class="hcl"></span><span class="hcs">Festive collection</span></button>
+        <button class="hcard" onclick="go('products','Rakhi')"><span class="hci">🧡</span><span class="hcl">Rakhi</span><span class="hcs">Festive collection</span></button>
         <button class="hcard" onclick="go('products','Bags')"><span class="hci">👜</span><span class="hcl">Bags & Stationary</span><span class="hcs">Best sellers</span></button>
       </div>
     </div>
@@ -569,7 +580,7 @@
       <button class="ccard" onclick="go('products','Nosepin')"><span class="cci">💫</span><span class="ccn">Nose Pins</span><span class="ccs">Pins, rings & nath</span></button>
       <button class="ccard" onclick="go('products','Bangles')"><span class="cci">🔮</span><span class="ccn">Bangles</span><span class="ccs">Kadas & sets</span></button>
       <button class="ccard" onclick="go('products','Necklace')"><span class="cci">📿</span><span class="ccn">Necklaces</span><span class="ccs">Chains & sets</span></button>
-      <button class="ccard" onclick="go('products','Rakhi')"><span class="cci"></span><span class="ccn"></span><span class="ccs">Festive collection</span></button>
+      <button class="ccard" onclick="go('products','Rakhi')"><span class="cci">🧡</span><span class="ccn">Rakhi</span><span class="ccs">Festive collection</span></button>
       <button class="ccard" onclick="go('products','Bags')"><span class="cci">👜</span><span class="ccn">Bags</span><span class="ccs">Handbags & totes</span></button>
       <button class="ccard" onclick="go('products','Stationary')"><span class="cci">✏️</span><span class="ccn">Stationary</span><span class="ccs">Notebooks & more</span></button>
     </div>
@@ -586,7 +597,7 @@
       <article class="pc"><div class="piw">✨<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Earrings</p><h3><span class="pname" onclick="go('product','P001')">Gold Plated Jhumka Earrings</span></h3><div class="ppricing"><span class="pprice">₹299</span><span class="pori">₹499</span></div><p class="psave">You save ₹200 (40% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P001')">Add to Cart</button></div></article>
       <article class="pc"><div class="piw" style="background:var(--sf)">🔮<span class="pbadge pbnew">New</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Bangles</p><h3><span class="pname" onclick="go('product','P003')">Glass Bangle Set (12 pcs)</span></h3><div class="ppricing"><span class="pprice">₹149</span><span class="pori">₹249</span></div><p class="psave">You save ₹100 (40% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P003')">Add to Cart</button></div></article>
       <article class="pc"><div class="piw" style="background:var(--gp)">📿<span class="pbadge pbsale">Sale</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Necklace</p><h3><span class="pname" onclick="go('product','P004')">Kundan Necklace Set</span></h3><div class="ppricing"><span class="pprice">₹799</span><span class="pori">₹1,299</span></div><p class="psave">You save ₹500 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P004')">Add to Cart</button></div></article>
-      <article class="pc"><div class="piw" style="background:var(--sf)">🧡<span class="pbadge pbnew">Festive</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat"></p><h3><span class="pname" onclick="go('product','P005')"></span></h3><div class="ppricing"><span class="pprice">₹249</span><span class="pori">₹399</span></div><p class="psave"></p><button class="btn bp pcta" onclick="addToCart(this,'P005')"></button></div></article>
+      <article class="pc"><div class="piw" style="background:var(--sf)">🧡<span class="pbadge pbnew">Festive</span><button class="pwish" onclick="toggleWish(this)">♡</button></div><div class="pb"><p class="pcat">Rakhi</p><h3><span class="pname" onclick="go('product','P005')">Designer Rakhi Set (5 pcs)</span></h3><div class="ppricing"><span class="pprice">₹249</span><span class="pori">₹399</span></div><p class="psave">You save ₹150 (38% off)</p><button class="btn bp pcta" onclick="addToCart(this,'P005')">Add to Cart</button></div></article>
     </div>
   </div></section>
 
@@ -595,9 +606,9 @@
   <section class="sec"><div class="w">
     <div class="deal">
       <div>
-        <p class="deye">Festive Collection Live!</p>
+        <p class="deye">🧡 Rakhi & Festive Collection Live!</p>
         <h2 class="dtitle">Subscribe for<br>exclusive offers.</h2>
-        <p class="dsub">Get first access to new arrivals, Diwali specials and members-only discounts.</p>
+        <p class="dsub">Get first access to new arrivals, Rakhi collections, Diwali specials and members-only discounts.</p>
         <div class="dinp"><label for="nle" class="sr">Email</label><input id="nle" type="email" placeholder="your@email.com"><button class="btn bg bsm" onclick="subscribe()">Subscribe</button></div>
       </div>
       <div class="ddeco" aria-hidden="true">🪷</div>
@@ -605,9 +616,9 @@
   </div></section>
 
   <div class="tbar"><div class="tgrid">
-   <!-- <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499 across Pune & India.</p></div></div> -->
+    <div class="ti"><div class="tico">🚚</div><div><p class="tit">Free Delivery</p><p class="tis">On orders above ₹499 across Pune & India.</p></div></div>
     <div class="ti"><div class="tico">💍</div><div><p class="tit">Genuine Quality</p><p class="tis">Gold plated & certified jewellery since 1997.</p></div></div>
-<!--    <div class="ti"><div class="tico">🔒</div><div><p class="tit">Secure Payments</p><p class="tis">UPI, cards, net banking — 100% safe.</p></div></div> -->
+    <div class="ti"><div class="tico">🔒</div><div><p class="tit">Secure Payments</p><p class="tis">UPI, cards, net banking — 100% safe.</p></div></div>
     <div class="ti"><div class="tico">🪷</div><div><p class="tit">Since 1997</p><p class="tis">Trusted by Pune families for 25+ years.</p></div></div>
   </div></div>
 
@@ -637,7 +648,7 @@
             <label class="fopt"><input type="radio" name="cat" value="Nosepin"> 💫 Nose Pins</label>
             <label class="fopt"><input type="radio" name="cat" value="Bangles"> 🔮 Bangles</label>
             <label class="fopt"><input type="radio" name="cat" value="Necklace"> 📿 Necklaces</label>
-            <label class="fopt"><input type="radio" name="cat" value=""> 🧡 Seasonal items</label>
+            <label class="fopt"><input type="radio" name="cat" value="Rakhi"> 🧡 Rakhi</label>
             <label class="fopt"><input type="radio" name="cat" value="Bags"> 👜 Bags</label>
             <label class="fopt"><input type="radio" name="cat" value="Stationary"> ✏️ Stationary</label>
           </div>
@@ -886,6 +897,7 @@
         <button class="adnl" onclick="showAP('cu',this)">👥 Customers</button>
         <button class="adnl" onclick="showAP('se',this)">⚙️ Settings</button>
         <hr style="border-color:rgba(255,255,255,.1);margin:var(--s4) 0">
+        <button class="adnl" onclick="go('billing')">🧾 In-Store Billing</button>
         <button class="adnl" onclick="go('home')">← Back to Store</button>
         <button class="adnl" onclick="doLogout()">🚪 Logout</button>
       </nav>
@@ -956,7 +968,7 @@
     <div class="f2">
       <div class="fg" style="grid-column:1/-1"><label class="fl">Product Name *</label><input class="fi" id="fNm"></div>
       <div class="fg" style="grid-column:1/-1"><label class="fl">Description</label><textarea class="ft" id="fDs"></textarea></div>
-      <div class="fg"><label class="fl">Category *</label><select class="fs" id="fCt"><option value="">Select…</option><option>Jewellery</option><option>Earrings</option><option>Nosepin</option><option>Bangles</option><option>Necklace</option><option>Seasonal items</option><option>Bags</option><option>Stationary</option></select></div>
+      <div class="fg"><label class="fl">Category *</label><select class="fs" id="fCt"><option value="">Select…</option><option>Jewellery</option><option>Earrings</option><option>Nosepin</option><option>Bangles</option><option>Necklace</option><option>Rakhi</option><option>Bags</option><option>Stationary</option></select></div>
       <div class="fg"><label class="fl">Status</label><select class="fs" id="fSt"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
       <div class="fg"><label class="fl">Price (₹) *</label><input class="fi" id="fPr" type="number"></div>
       <div class="fg"><label class="fl">Sale Price (₹)</label><input class="fi" id="fSp" type="number"></div>
@@ -989,6 +1001,134 @@
 <!-- ═══════════════════════════════════════════════════════════
      FOOTER
 ════════════════════════════════════════════════════════════ -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     BILLING / POS PAGE
+════════════════════════════════════════════════════════════ -->
+<div class="page" id="pg-billing">
+  <div class="w" style="padding-top:var(--s8);padding-bottom:var(--s16)">
+
+    <!-- Page header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s6);flex-wrap:wrap;gap:var(--s4)">
+      <div>
+        <h1 class="stitle">In-Store <span>Billing</span></h1>
+        <p style="color:var(--tm);font-size:var(--sm);margin-top:4px">Invoice No: <strong id="posInvNo" style="color:var(--c1);font-family:var(--fd)">Generating…</strong></p>
+      </div>
+      <div style="display:flex;gap:var(--s3);flex-wrap:wrap">
+        <button class="btn bo bsm" onclick="posClear()">🗑 Clear Bill</button>
+        <button class="btn bp bsm" onclick="posPrint()">🖨 Print</button>
+        <button class="btn bg bsm" onclick="posFinalize()">✅ Finalize &amp; Send</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:var(--s6);align-items:start">
+
+      <!-- LEFT: Product search + bill items -->
+      <div>
+        <!-- Product search bar -->
+        <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);padding:var(--s4);margin-bottom:var(--s4)">
+          <p style="font-size:var(--sm);font-weight:600;margin-bottom:var(--s3)">Search &amp; Add Products</p>
+          <div style="display:flex;gap:var(--s3)">
+            <input class="fi" id="posSearch" placeholder="Type product name or scan barcode…"
+              oninput="posSearchProds(this.value)" autocomplete="off" style="flex:1">
+            <select class="fs" id="posCatFilter" onchange="posSearchProds(document.getElementById('posSearch').value)" style="width:160px">
+              <option value="">All Categories</option>
+              <option>Jewellery</option><option>Earrings</option><option>Nosepin</option>
+              <option>Bangles</option><option>Necklace</option><option>Rakhi</option>
+              <option>Bags</option><option>Stationary</option>
+            </select>
+          </div>
+          <!-- Search results dropdown -->
+          <div id="posResults" style="margin-top:var(--s3);max-height:220px;overflow-y:auto;display:none;border:1px solid var(--br);border-radius:var(--rm)"></div>
+        </div>
+
+        <!-- Bill items table -->
+        <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);overflow:hidden">
+          <div style="padding:var(--s3) var(--s4);background:var(--sf);font-size:var(--sm);font-weight:600;color:var(--tm);display:grid;grid-template-columns:1fr 90px 80px 90px 36px;gap:var(--s2)">
+            <span>Item</span><span style="text-align:center">Qty</span>
+            <span style="text-align:right">Rate</span><span style="text-align:right">Amount</span><span></span>
+          </div>
+          <div id="posBillItems" style="min-height:120px">
+            <div style="text-align:center;color:var(--tm);padding:var(--s8);font-size:var(--sm)">
+              No items added yet. Search and add products above.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Customer + summary + payment -->
+      <div>
+
+        <!-- Customer details -->
+        <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);padding:var(--s5);margin-bottom:var(--s4)">
+          <p style="font-size:var(--sm);font-weight:600;margin-bottom:var(--s3)">Customer Details <span style="color:var(--tm);font-weight:400">(optional)</span></p>
+          <div class="fg" style="margin-bottom:var(--s3)">
+            <label class="fl">Customer Name</label>
+            <input class="fi" id="posCustName" placeholder="Walk-in Customer">
+          </div>
+          <div class="fg" style="margin-bottom:var(--s3)">
+            <label class="fl">Mobile</label>
+            <input class="fi" id="posCustMobile" type="tel" placeholder="10-digit number">
+          </div>
+          <div class="fg" style="margin-bottom:0">
+            <label class="fl">Email <span style="color:var(--g);font-weight:600">← Invoice will be sent here</span></label>
+            <input class="fi" id="posCustEmail" type="email" placeholder="customer@email.com">
+          </div>
+        </div>
+
+        <!-- Bill summary -->
+        <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);padding:var(--s5);margin-bottom:var(--s4)">
+          <p style="font-size:var(--sm);font-weight:600;margin-bottom:var(--s4)">Bill Summary</p>
+          <div style="display:flex;justify-content:space-between;font-size:var(--sm);margin-bottom:var(--s2)"><span style="color:var(--tm)">Subtotal</span><span id="posSub">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:var(--sm);margin-bottom:var(--s2)">
+            <span style="color:var(--tm)">Discount (<input id="posDiscPct" type="number" value="0" min="0" max="100"
+              style="width:44px;border:1px solid var(--br);border-radius:3px;padding:1px 4px;font-size:var(--xs);text-align:center" oninput="posCalc()">%)</span>
+            <span id="posDiscAmt" style="color:var(--ok)">-₹0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:var(--sm);margin-bottom:var(--s2)">
+            <span style="color:var(--tm)">GST (<input id="posGstPct" type="number" value="0" min="0" max="28"
+              style="width:36px;border:1px solid var(--br);border-radius:3px;padding:1px 4px;font-size:var(--xs);text-align:center" oninput="posCalc()">%)</span>
+            <span id="posGstAmt">₹0</span>
+          </div>
+          <div style="border-top:2px solid var(--br);margin:var(--s3) 0;padding-top:var(--s3);display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-family:var(--fd);font-size:var(--lg);font-weight:700">TOTAL</span>
+            <span id="posTotal" style="font-family:var(--fd);font-size:var(--x2);font-weight:700;color:var(--c1)">₹0</span>
+          </div>
+        </div>
+
+        <!-- Payment method -->
+        <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);padding:var(--s5);margin-bottom:var(--s4)">
+          <p style="font-size:var(--sm);font-weight:600;margin-bottom:var(--s3)">Payment Method</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2)">
+            <label style="display:flex;align-items:center;gap:var(--s2);padding:var(--s3);border:1.5px solid var(--br);border-radius:var(--rm);cursor:pointer;font-size:var(--sm);transition:border-color var(--ease)">
+              <input type="radio" name="posPay" value="Cash" checked style="accent-color:var(--g)"> 💵 Cash
+            </label>
+            <label style="display:flex;align-items:center;gap:var(--s2);padding:var(--s3);border:1.5px solid var(--br);border-radius:var(--rm);cursor:pointer;font-size:var(--sm);transition:border-color var(--ease)">
+              <input type="radio" name="posPay" value="UPI" style="accent-color:var(--g)"> 📱 UPI
+            </label>
+            <label style="display:flex;align-items:center;gap:var(--s2);padding:var(--s3);border:1.5px solid var(--br);border-radius:var(--rm);cursor:pointer;font-size:var(--sm);transition:border-color var(--ease)">
+              <input type="radio" name="posPay" value="Card" style="accent-color:var(--g)"> 💳 Card
+            </label>
+            <label style="display:flex;align-items:center;gap:var(--s2);padding:var(--s3);border:1.5px solid var(--br);border-radius:var(--rm);cursor:pointer;font-size:var(--sm);transition:border-color var(--ease)">
+              <input type="radio" name="posPay" value="Credit" style="accent-color:var(--g)"> 📒 Credit
+            </label>
+          </div>
+        </div>
+
+        <button class="btn bg bfl blg" onclick="posFinalize()" style="margin-bottom:var(--s3)">
+          ✅ Finalize &amp; Send Invoice
+        </button>
+        <button class="btn bo bfl bsm" onclick="posPrint()">🖨 Print Bill</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRINT INVOICE TEMPLATE (hidden, used for print/PDF) -->
+<div id="printInvoice" style="display:none">
+  <div id="printContent"></div>
+</div>
+
 <!-- LIGHTBOX -->
 <div id="lightbox" role="dialog" aria-label="Image viewer" onclick="closeLightbox(event)">
   <button id="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
@@ -1001,7 +1141,7 @@
   <div class="fgrid">
     <div>
       <p class="fbname">Radhika <span>Varieties</span></p>
-      <p class="fabout">Radhika Varieties — Karve Nagar, Pune's most trusted jewellery & variety store since 1997. We offer bridal jewellery, earrings, bangles, necklaces, Seasonal items, bags and stationary at the best prices.</p>
+      <p class="fabout">Radhika Varieties — Karve Nagar, Pune's most trusted jewellery & variety store since 1997. We offer bridal jewellery, earrings, bangles, necklaces, Rakhi, bags and stationary at the best prices.</p>
       <div class="fsoc">
         <button class="fsocbtn" aria-label="Facebook">📘</button>
         <button class="fsocbtn" aria-label="Instagram">📸</button>
@@ -1016,7 +1156,7 @@
         <li><button onclick="go('products','Earrings')">Earrings</button></li>
         <li><button onclick="go('products','Bangles')">Bangles</button></li>
         <li><button onclick="go('products','Necklace')">Necklaces</button></li>
-        <li><button onclick="go('products','Rakhi')">Seasonal items</button></li>
+        <li><button onclick="go('products','Rakhi')">Rakhi</button></li>
         <li><button onclick="go('products','Bags')">Bags</button></li>
       </ul>
     </div>
@@ -1220,7 +1360,7 @@ function toast(msg, type='') {
    ROUTER
 ───────────────────────────────────────────────────────── */
 const authPages = ['cart','checkout','orders','profile'];
-const adminPages = ['admin'];
+const adminPages = ['admin', 'billing'];
 
 function go(page, param) {
   if (authPages.includes(page) && !logd()) {
@@ -1251,6 +1391,7 @@ function go(page, param) {
   if (page==='orders')   loadOrders();
   if (page==='profile')  loadProfile();
   if (page==='admin')    { loadAdminDB(); }
+  if (page==='billing')  { loadBilling(); }
 }
 
 window.addEventListener('popstate', e => { if (e.state) go(e.state.page, e.state.param); });
@@ -1269,12 +1410,12 @@ function updNav() {
   if (u) {
     const n = document.getElementById('nun');
     if (n) n.textContent = (u.name || 'Account').split(' ')[0];
-    // Show Admin Panel ONLY for Admin role (case-insensitive)
-    const adminBtn = document.getElementById('adminNavBtn');
-    if (adminBtn) {
-      const role = (u.role || u.Role || '').toLowerCase();
-      adminBtn.style.display = (role === 'admin') ? '' : 'none';
-    }
+    // Show Admin Panel + Billing ONLY for Admin role (case-insensitive)
+    const role = (u.role || u.Role || '').toLowerCase();
+    const adminBtn   = document.getElementById('adminNavBtn');
+    const billingBtn = document.getElementById('billingNavBtn');
+    if (adminBtn)   adminBtn.style.display   = (role === 'admin') ? '' : 'none';
+    if (billingBtn) billingBtn.style.display = (role === 'admin') ? '' : 'none';
   }
   updBadge();
 }
@@ -2246,6 +2387,338 @@ document.addEventListener('DOMContentLoaded', () => {
     previewImg(document.getElementById('fImg'));
   });
 });
+
+
+/* ════════════════════════════════════════════════════════════
+   BILLING / POS SYSTEM — Radhika Varieties In-Store
+════════════════════════════════════════════════════════════ */
+let posBill      = [];   // [{id, name, category, price, qty, total}]
+let posAllProds  = [];   // cached from API
+
+// ── Generate invoice number: RV-YYYYMMDD-XXXX ─────────────────
+function genInvNo() {
+  const now  = new Date();
+  const date = now.getFullYear().toString() +
+    String(now.getMonth()+1).padStart(2,'0') +
+    String(now.getDate()).padStart(2,'0');
+  const seq  = String(Math.floor(Math.random()*9000)+1000);
+  return 'RV-' + date + '-' + seq;
+}
+
+// ── Load billing page ─────────────────────────────────────────
+async function loadBilling() {
+  // Set invoice number
+  document.getElementById('posInvNo').textContent = genInvNo();
+  // Load products for search
+  const r = await apiG({ action: 'filterProducts', limit: 500 });
+  if (r.success && r.products) {
+    posAllProds = r.products;
+  } else {
+    // Use sample data if API not connected
+    posAllProds = typeof SAMPLE_PRODS !== 'undefined' ? SAMPLE_PRODS : [];
+  }
+  posBill = [];
+  posRenderBill();
+  posCalc();
+}
+
+// ── Search products ───────────────────────────────────────────
+function posSearchProds(q) {
+  const cat = document.getElementById('posCatFilter').value;
+  const res = document.getElementById('posResults');
+  q = (q || '').trim().toLowerCase();
+  if (!q && !cat) { res.style.display = 'none'; return; }
+
+  let filtered = posAllProds.filter(p => {
+    const matchQ   = !q || p.Name.toLowerCase().includes(q);
+    const matchCat = !cat || p.Category === cat;
+    return matchQ && matchCat && (p.Status === 'Active' || !p.Status);
+  }).slice(0, 12);
+
+  if (!filtered.length) {
+    res.style.display = 'block';
+    res.innerHTML = '<div style="padding:var(--s3) var(--s4);color:var(--tm);font-size:var(--sm)">No products found.</div>';
+    return;
+  }
+
+  res.style.display = 'block';
+  res.innerHTML = filtered.map(p => {
+    const price = p.SalePrice ? Number(p.SalePrice) : Number(p.Price);
+    const img   = (p.images && p.images[0])
+      ? `<img src="${p.images[0]}" style="width:36px;height:36px;object-fit:cover;border-radius:4px;flex-shrink:0" onerror="this.style.display='none'">`
+      : `<span style="font-size:1.4rem;flex-shrink:0">${p.emoji||'📦'}</span>`;
+    return `<div onclick="posAddItem('${p.ProductID}')"
+      style="display:flex;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);cursor:pointer;border-bottom:1px solid var(--br);transition:background var(--ease)"
+      onmouseover="this.style.background='var(--sf)'" onmouseout="this.style.background=''">
+      ${img}
+      <div style="flex:1;min-width:0">
+        <div style="font-size:var(--sm);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.Name}</div>
+        <div style="font-size:var(--xs);color:var(--tm)">${p.Category} · Stock: ${p.Stock||'?'}</div>
+      </div>
+      <div style="font-size:var(--sm);font-weight:700;color:var(--c1);flex-shrink:0">${fmt(price)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Add item to bill ──────────────────────────────────────────
+function posAddItem(productId) {
+  const p = posAllProds.find(x => x.ProductID === productId);
+  if (!p) return;
+
+  const existing = posBill.find(i => i.id === productId);
+  if (existing) {
+    existing.qty++;
+    existing.total = existing.price * existing.qty;
+  } else {
+    const price = p.SalePrice ? Number(p.SalePrice) : Number(p.Price);
+    posBill.push({ id: p.ProductID, name: p.Name, category: p.Category, price, qty: 1, total: price });
+  }
+
+  // Clear search
+  document.getElementById('posSearch').value    = '';
+  document.getElementById('posResults').style.display = 'none';
+
+  posRenderBill();
+  posCalc();
+  toast(p.Name + ' added', 'ok');
+}
+
+// ── Render bill items ─────────────────────────────────────────
+function posRenderBill() {
+  const el = document.getElementById('posBillItems');
+  if (!posBill.length) {
+    el.innerHTML = '<div style="text-align:center;color:var(--tm);padding:var(--s8);font-size:var(--sm)">No items added yet. Search and add products above.</div>';
+    return;
+  }
+  el.innerHTML = posBill.map((item, idx) => `
+    <div style="display:grid;grid-template-columns:1fr 90px 80px 90px 36px;gap:var(--s2);align-items:center;padding:var(--s3) var(--s4);border-bottom:1px solid var(--br)">
+      <div>
+        <div style="font-size:var(--sm);font-weight:600">${item.name}</div>
+        <div style="font-size:var(--xs);color:var(--tm)">${item.category} · ${fmt(item.price)} each</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:4px">
+        <button onclick="posQty(${idx},-1)" style="width:26px;height:26px;border:1px solid var(--br);border-radius:3px;font-size:var(--md);background:var(--su);cursor:pointer">−</button>
+        <span style="min-width:24px;text-align:center;font-weight:600;font-size:var(--sm)">${item.qty}</span>
+        <button onclick="posQty(${idx},1)"  style="width:26px;height:26px;border:1px solid var(--br);border-radius:3px;font-size:var(--md);background:var(--su);cursor:pointer">+</button>
+      </div>
+      <div style="text-align:right;font-size:var(--sm)">${fmt(item.price)}</div>
+      <div style="text-align:right;font-weight:700;font-size:var(--sm);color:var(--c1)">${fmt(item.total)}</div>
+      <button onclick="posRemove(${idx})" style="color:var(--er);background:none;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center" title="Remove">✕</button>
+    </div>`).join('');
+}
+
+// ── Qty controls ──────────────────────────────────────────────
+function posQty(idx, delta) {
+  posBill[idx].qty  = Math.max(1, posBill[idx].qty + delta);
+  posBill[idx].total = posBill[idx].price * posBill[idx].qty;
+  posRenderBill();
+  posCalc();
+}
+
+function posRemove(idx) {
+  posBill.splice(idx, 1);
+  posRenderBill();
+  posCalc();
+}
+
+// ── Calculate totals ──────────────────────────────────────────
+function posCalc() {
+  const sub     = posBill.reduce((s, i) => s + i.total, 0);
+  const discPct = Number(document.getElementById('posDiscPct')?.value || 0);
+  const gstPct  = Number(document.getElementById('posGstPct')?.value  || 0);
+  const disc    = Math.round(sub * discPct / 100);
+  const gst     = Math.round((sub - disc) * gstPct / 100);
+  const total   = sub - disc + gst;
+
+  document.getElementById('posSub').textContent     = fmt(sub);
+  document.getElementById('posDiscAmt').textContent = '-' + fmt(disc);
+  document.getElementById('posGstAmt').textContent  = fmt(gst);
+  document.getElementById('posTotal').textContent   = fmt(total);
+}
+
+// ── Clear bill ─────────────────────────────────────────────────
+function posClear() {
+  if (posBill.length && !confirm('Clear the current bill?')) return;
+  posBill = [];
+  document.getElementById('posCustName').value  = '';
+  document.getElementById('posCustEmail').value = '';
+  document.getElementById('posCustMobile').value= '';
+  document.getElementById('posDiscPct').value   = '0';
+  document.getElementById('posGstPct').value    = '0';
+  document.getElementById('posInvNo').textContent = genInvNo();
+  posRenderBill();
+  posCalc();
+}
+
+// ── Build invoice HTML (used for print + email) ────────────────
+function buildInvoiceHTML(invNo, custName, custEmail, custMobile, payMethod, items, sub, disc, gst, total) {
+  const date = new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'long',year:'numeric'});
+  const itemRows = items.map((item, i) => `
+    <tr>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4">${i+1}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4">${item.name}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4;color:#7A6652">${item.category}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4;text-align:center">${item.qty}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4;text-align:right">₹${item.price.toLocaleString('en-IN')}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #f0ece4;text-align:right;font-weight:700">₹${item.total.toLocaleString('en-IN')}</td>
+    </tr>`).join('');
+
+  return `<!DOCTYPE html>
+<html><head><meta charset="UTF-8">
+<title>Invoice ${invNo} — Radhika Varieties</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'DM Sans',Arial,sans-serif;color:#1C1410;background:#fff;font-size:13px;}
+  .inv{max-width:720px;margin:0 auto;padding:32px;}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px;padding-bottom:18px;border-bottom:3px solid #5C1A1A;}
+  .brand{font-size:22px;font-weight:700;color:#5C1A1A;font-family:Georgia,serif;}
+  .brand small{display:block;font-size:11px;font-family:Arial;font-weight:400;color:#7A6652;letter-spacing:.08em;margin-top:2px;}
+  .inv-meta{text-align:right;}
+  .inv-no{font-size:16px;font-weight:700;color:#5C1A1A;font-family:Georgia,serif;}
+  .inv-date{font-size:12px;color:#7A6652;margin-top:4px;}
+  .cust{background:#FBF7F0;border-radius:8px;padding:14px 18px;margin-bottom:22px;}
+  .cust h4{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#7A6652;margin-bottom:6px;}
+  .cust p{font-size:13px;color:#1C1410;}
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;}
+  thead tr{background:#5C1A1A;color:#fff;}
+  thead th{padding:10px 10px;text-align:left;font-size:12px;font-weight:600;}
+  thead th:last-child,thead th:nth-child(4),thead th:nth-child(5){text-align:right;}
+  thead th:nth-child(4){text-align:center;}
+  .totals{margin-left:auto;width:260px;}
+  .tot-row{display:flex;justify-content:space-between;padding:5px 0;font-size:13px;border-bottom:1px solid #f0ece4;}
+  .tot-grand{display:flex;justify-content:space-between;padding:10px 0;font-size:16px;font-weight:700;color:#5C1A1A;border-top:2px solid #5C1A1A;margin-top:4px;}
+  .pay-badge{display:inline-block;background:#dcfce7;color:#2D6A4F;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:600;margin-top:8px;}
+  .footer{margin-top:32px;padding-top:16px;border-top:1px solid #E8DECE;text-align:center;font-size:11px;color:#7A6652;line-height:1.8;}
+  .sari{height:6px;background:repeating-linear-gradient(90deg,transparent 0,transparent 8px,#F5E6C8 8px,#F5E6C8 10px);background-color:#F5E6C8;margin:20px 0;}
+  @media print{body{padding:0}.inv{padding:20px}}
+</style></head>
+<body><div class="inv">
+  <div class="hdr">
+    <div>
+      <div class="brand">🪷 Radhika Varieties<small>Quality · Variety · Trust</small></div>
+      <div style="font-size:11px;color:#7A6652;margin-top:8px;line-height:1.6">
+        Opp. Bijali Talim Mandir, Karve Nagar<br>Pune, Maharashtra 411052<br>Est. 1997
+      </div>
+    </div>
+    <div class="inv-meta">
+      <div class="inv-no">INVOICE</div>
+      <div style="font-family:Georgia;font-size:13px;color:#5C1A1A;margin-top:4px">${invNo}</div>
+      <div class="inv-date">${date}</div>
+      <div class="pay-badge">${payMethod}</div>
+    </div>
+  </div>
+  <div class="sari"></div>
+  <div class="cust">
+    <h4>Bill To</h4>
+    <p><strong>${custName || 'Walk-in Customer'}</strong>
+    ${custMobile ? '<br>' + custMobile : ''}
+    ${custEmail  ? '<br>' + custEmail  : ''}</p>
+  </div>
+  <table>
+    <thead><tr>
+      <th>#</th><th>Item</th><th>Category</th>
+      <th style="text-align:center">Qty</th>
+      <th style="text-align:right">Rate</th>
+      <th style="text-align:right">Amount</th>
+    </tr></thead>
+    <tbody>${itemRows}</tbody>
+  </table>
+  <div class="totals">
+    <div class="tot-row"><span>Subtotal</span><span>₹${sub.toLocaleString('en-IN')}</span></div>
+    ${disc ? `<div class="tot-row" style="color:#2D6A4F"><span>Discount</span><span>-₹${disc.toLocaleString('en-IN')}</span></div>` : ''}
+    ${gst  ? `<div class="tot-row"><span>GST</span><span>₹${gst.toLocaleString('en-IN')}</span></div>` : ''}
+    <div class="tot-grand"><span>TOTAL</span><span>₹${total.toLocaleString('en-IN')}</span></div>
+  </div>
+  <div class="sari"></div>
+  <div class="footer">
+    Thank you for shopping at Radhika Varieties!<br>
+    📍 Karve Nagar, Pune &nbsp;|&nbsp; Est. 1997 &nbsp;|&nbsp; Quality · Variety · Trust<br>
+    <small>This is a computer-generated invoice. No signature required.</small>
+  </div>
+</div></body></html>`;
+}
+
+// ── Print bill ─────────────────────────────────────────────────
+function posPrint() {
+  if (!posBill.length) { toast('Add items to the bill first.', 'er'); return; }
+  const invNo    = document.getElementById('posInvNo').textContent;
+  const name     = document.getElementById('posCustName').value.trim()  || 'Walk-in Customer';
+  const email    = document.getElementById('posCustEmail').value.trim();
+  const mobile   = document.getElementById('posCustMobile').value.trim();
+  const payMethod= document.querySelector('input[name="posPay"]:checked')?.value || 'Cash';
+  const sub      = posBill.reduce((s,i)=>s+i.total, 0);
+  const discPct  = Number(document.getElementById('posDiscPct').value || 0);
+  const gstPct   = Number(document.getElementById('posGstPct').value  || 0);
+  const disc     = Math.round(sub * discPct / 100);
+  const gst      = Math.round((sub-disc) * gstPct / 100);
+  const total    = sub - disc + gst;
+
+  const html = buildInvoiceHTML(invNo, name, email, mobile, payMethod, posBill, sub, disc, gst, total);
+  const win  = window.open('', '_blank', 'width=800,height:900');
+  win.document.write(html);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 600);
+}
+
+// ── Finalize: save to sheet + send email ───────────────────────
+async function posFinalize() {
+  if (!posBill.length) { toast('Add items to the bill first.', 'er'); return; }
+
+  const invNo    = document.getElementById('posInvNo').textContent;
+  const name     = document.getElementById('posCustName').value.trim()  || 'Walk-in Customer';
+  const email    = document.getElementById('posCustEmail').value.trim();
+  const mobile   = document.getElementById('posCustMobile').value.trim();
+  const payMethod= document.querySelector('input[name="posPay"]:checked')?.value || 'Cash';
+  const sub      = posBill.reduce((s,i)=>s+i.total, 0);
+  const discPct  = Number(document.getElementById('posDiscPct').value || 0);
+  const gstPct   = Number(document.getElementById('posGstPct').value  || 0);
+  const disc     = Math.round(sub * discPct / 100);
+  const gst      = Math.round((sub-disc) * gstPct / 100);
+  const total    = sub - disc + gst;
+
+  const btn = document.querySelector('[onclick="posFinalize()"]');
+  if (btn) { btn.disabled = true; btn.textContent = '⏳ Processing…'; }
+
+  const r = await apiP({
+    action      : 'createInStoreBill',
+    token       : tok(),
+    invoiceNo   : invNo,
+    customerName: name,
+    customerEmail: email,
+    customerMobile: mobile,
+    paymentMethod: payMethod,
+    items       : posBill,
+    subtotal    : sub,
+    discount    : disc,
+    gst,
+    total,
+    invoiceHtml : buildInvoiceHTML(invNo, name, email, mobile, payMethod, posBill, sub, disc, gst, total)
+  });
+
+  if (btn) { btn.disabled = false; btn.textContent = '✅ Finalize & Send Invoice'; }
+
+  if (r._mock) {
+    // API not connected — still print the bill
+    toast('API not connected — opening print view.', '');
+    posPrint();
+    return;
+  }
+
+  if (r.success) {
+    toast(email ? '✅ Bill saved & invoice sent to ' + email : '✅ Bill saved!', 'ok');
+    // Generate new invoice number for next bill
+    setTimeout(() => {
+      document.getElementById('posInvNo').textContent = genInvNo();
+      posBill = [];
+      posRenderBill();
+      posCalc();
+    }, 1500);
+  } else {
+    toast(r.message || 'Something went wrong.', 'er');
+    posPrint(); // fallback to print
+  }
+}
 
 /* ─────────────────────────────────────────────────────────
    KEYBOARD ACCESSIBILITY
