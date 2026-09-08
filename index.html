@@ -967,7 +967,7 @@
     <h3 id="pmtitle">Add Product</h3>
     <div class="f2">
       <div class="fg" style="grid-column:1/-1"><label class="fl">Product Name *</label><input class="fi" id="fNm"></div>
-      <div class="fg" style="grid-column:1/-1"><label class="fl">Deion</label><textarea class="ft" id="fDs"></textarea></div>
+      <div class="fg" style="grid-column:1/-1"><label class="fl">Description</label><textarea class="ft" id="fDs"></textarea></div>
       <div class="fg"><label class="fl">Category *</label><select class="fs" id="fCt"><option value="">Select…</option><option>Jewellery</option><option>Earrings</option><option>Nosepin</option><option>Bangles</option><option>Necklace</option><option>Rakhi</option><option>Bags</option><option>Stationary</option></select></div>
       <div class="fg"><label class="fl">Status</label><select class="fs" id="fSt"><option value="Active">Active</option><option value="Inactive">Inactive</option></select></div>
       <div class="fg"><label class="fl">Price (₹) *</label><input class="fi" id="fPr" type="number"></div>
@@ -1192,17 +1192,17 @@
     </div>
   </div>
 </footer>
-<>
+<script>
 'use strict';
 /* ══════════════════════════════════════════════════════════
    API CONFIG — Radhika Varieties
-   ✏️  After deploying Apps , paste your /exec URL below
+   ✏️  After deploying Apps Script, paste your /exec URL below
    ══════════════════════════════════════════════════════════ */
 const API = "https://script.google.com/macros/s/AKfycbwghd9_MIqdQzBtL8hFLBPIWOWBvUGXy4z9pNKFrrEx3lAvPBVMizymaoHjAlIdiT2I/exec";
-//           ↑ Replace with: https://.google.com/macros/s/.../exec
+//           ↑ Replace with: https://script.google.com/macros/s/.../exec
 
 /* ── Is API configured? ───────────────────────────────────── */
-const isMock = () => !API || API.includes("YOUR_APPS_");
+const isMock = () => !API || API.includes("YOUR_APPS_SCRIPT");
 
 /* ── GET — query string params, no CORS preflight ───────────── */
 async function apiG(params = {}) {
