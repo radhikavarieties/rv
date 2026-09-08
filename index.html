@@ -1042,15 +1042,39 @@
           <div id="posResults" style="margin-top:var(--s3);max-height:220px;overflow-y:auto;display:none;border:1px solid var(--br);border-radius:var(--rm)"></div>
         </div>
 
+        <!-- Manual item entry -->
+        <div style="background:var(--su);border:1.5px solid var(--g);border-radius:var(--rmd);padding:var(--s4);margin-bottom:var(--s4)">
+          <p style="font-size:var(--sm);font-weight:600;margin-bottom:var(--s3);color:var(--c1)">✏️ Add Item Manually <span style="color:var(--tm);font-weight:400">— for unlisted products</span></p>
+          <div style="display:grid;grid-template-columns:1fr 80px 90px auto;gap:var(--s2);align-items:end">
+            <div>
+              <label class="fl" style="margin-bottom:4px">Item Name *</label>
+              <input class="fi" id="manualName" placeholder="e.g. Gold Chain, Nose Ring…" autocomplete="off">
+            </div>
+            <div>
+              <label class="fl" style="margin-bottom:4px">Qty</label>
+              <input class="fi" id="manualQty" type="number" value="1" min="1" style="text-align:center">
+            </div>
+            <div>
+              <label class="fl" style="margin-bottom:4px">Rate (₹)</label>
+              <input class="fi" id="manualRate" type="number" placeholder="0" min="0" step="0.50">
+            </div>
+            <button class="btn bg" onclick="posAddManual()" style="white-space:nowrap;padding:.6em 1em">+ Add</button>
+          </div>
+          <p style="font-size:var(--xs);color:var(--tm);margin-top:var(--s2)">Press Enter in any field to add quickly.</p>
+        </div>
+
         <!-- Bill items table -->
         <div style="background:var(--su);border:1.5px solid var(--br);border-radius:var(--rmd);overflow:hidden">
-          <div style="padding:var(--s3) var(--s4);background:var(--sf);font-size:var(--sm);font-weight:600;color:var(--tm);display:grid;grid-template-columns:1fr 90px 80px 90px 36px;gap:var(--s2)">
-            <span>Item</span><span style="text-align:center">Qty</span>
-            <span style="text-align:right">Rate</span><span style="text-align:right">Amount</span><span></span>
+          <div style="padding:var(--s3) var(--s4);background:var(--sf);font-size:var(--sm);font-weight:600;color:var(--tm);display:grid;grid-template-columns:1fr 80px 90px 90px 36px;gap:var(--s2)">
+            <span>Item</span>
+            <span style="text-align:center">Qty</span>
+            <span style="text-align:right">Rate (₹)</span>
+            <span style="text-align:right">Amount</span>
+            <span></span>
           </div>
           <div id="posBillItems" style="min-height:120px">
             <div style="text-align:center;color:var(--tm);padding:var(--s8);font-size:var(--sm)">
-              No items added yet. Search and add products above.
+              No items yet — search above or enter manually.
             </div>
           </div>
         </div>
@@ -2477,6 +2501,9 @@ function posAddItem(productId) {
   // Clear search
   document.getElementById('posSearch').value    = '';
   document.getElementById('posResults').style.display = 'none';
+  document.getElementById('manualName').value  = '';
+  document.getElementById('manualQty').value   = '1';
+  document.getElementById('manualRate').value  = '';
 
   posRenderBill();
   posCalc();
@@ -2487,29 +2514,140 @@ function posAddItem(productId) {
 function posRenderBill() {
   const el = document.getElementById('posBillItems');
   if (!posBill.length) {
-    el.innerHTML = '<div style="text-align:center;color:var(--tm);padding:var(--s8);font-size:var(--sm)">No items added yet. Search and add products above.</div>';
+    el.innerHTML = '<div style="text-align:center;color:var(--tm);padding:var(--s8);font-size:var(--sm)">No items yet — search above or enter manually.</div>';
     return;
   }
+
+  // Each row is fully editable inline
   el.innerHTML = posBill.map((item, idx) => `
-    <div style="display:grid;grid-template-columns:1fr 90px 80px 90px 36px;gap:var(--s2);align-items:center;padding:var(--s3) var(--s4);border-bottom:1px solid var(--br)">
+    <div style="display:grid;grid-template-columns:1fr 80px 90px 90px 36px;gap:var(--s2);align-items:center;padding:var(--s3) var(--s4);border-bottom:1px solid var(--br);background:${item.manual?'#fffdf5':''}">
+
+      <!-- Item name — editable -->
       <div>
-        <div style="font-size:var(--sm);font-weight:600">${item.name}</div>
-        <div style="font-size:var(--xs);color:var(--tm)">${item.category} · ${fmt(item.price)} each</div>
+        <input value="${item.name.replace(/"/g,'&quot;')}"
+          onchange="posEditName(${idx},this.value)"
+          style="width:100%;border:none;border-bottom:1.5px dashed ${item.manual?'var(--g)':'transparent'};background:transparent;font-size:var(--sm);font-weight:600;color:var(--tx);padding:2px 0;outline:none"
+          title="Click to edit item name">
+        <div style="font-size:var(--xs);color:var(--tm)">${item.manual ? '✏️ Manual' : item.category}</div>
       </div>
-      <div style="display:flex;align-items:center;justify-content:center;gap:4px">
-        <button onclick="posQty(${idx},-1)" style="width:26px;height:26px;border:1px solid var(--br);border-radius:3px;font-size:var(--md);background:var(--su);cursor:pointer">−</button>
-        <span style="min-width:24px;text-align:center;font-weight:600;font-size:var(--sm)">${item.qty}</span>
-        <button onclick="posQty(${idx},1)"  style="width:26px;height:26px;border:1px solid var(--br);border-radius:3px;font-size:var(--md);background:var(--su);cursor:pointer">+</button>
+
+      <!-- Qty — editable number input -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:3px">
+        <button onclick="posQty(${idx},-1)" style="width:24px;height:24px;border:1px solid var(--br);border-radius:3px;font-size:1rem;background:var(--su);cursor:pointer;line-height:1">−</button>
+        <input type="number" value="${item.qty}" min="1"
+          onchange="posEditQty(${idx},this.value)"
+          style="width:34px;text-align:center;border:1px solid var(--br);border-radius:3px;padding:2px 2px;font-size:var(--sm);font-weight:600">
+        <button onclick="posQty(${idx},1)"  style="width:24px;height:24px;border:1px solid var(--br);border-radius:3px;font-size:1rem;background:var(--su);cursor:pointer;line-height:1">+</button>
       </div>
-      <div style="text-align:right;font-size:var(--sm)">${fmt(item.price)}</div>
-      <div style="text-align:right;font-weight:700;font-size:var(--sm);color:var(--c1)">${fmt(item.total)}</div>
-      <button onclick="posRemove(${idx})" style="color:var(--er);background:none;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center" title="Remove">✕</button>
-    </div>`).join('');
+
+      <!-- Rate — editable -->
+      <div style="text-align:right">
+        <input type="number" value="${item.price}" min="0" step="0.50"
+          onchange="posEditRate(${idx},this.value)"
+          style="width:100%;text-align:right;border:none;border-bottom:1.5px dashed var(--br);background:transparent;font-size:var(--sm);padding:2px 0;outline:none;color:var(--tx)"
+          title="Click to edit rate">
+      </div>
+
+      <!-- Amount — auto-calculated but also directly editable -->
+      <div style="text-align:right">
+        <input type="number" value="${item.total}" min="0"
+          onchange="posEditTotal(${idx},this.value)"
+          style="width:100%;text-align:right;border:none;border-bottom:1.5px dashed var(--g);background:transparent;font-size:var(--sm);font-weight:700;padding:2px 0;outline:none;color:var(--c1)"
+          title="Edit amount directly (overrides rate × qty)">
+      </div>
+
+      <!-- Remove -->
+      <button onclick="posRemove(${idx})"
+        style="color:var(--er);background:none;border:none;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;width:100%;height:100%"
+        title="Remove item">✕</button>
+    </div>`).join('') +
+    `<div style="padding:var(--s2) var(--s4);font-size:var(--xs);color:var(--tm);text-align:right;background:var(--sf)">
+      💡 Click any value to edit it directly
+     </div>`;
 }
 
-// ── Qty controls ──────────────────────────────────────────────
+// ── Manual item add ──────────────────────────────────────────
+function posAddManual() {
+  const name = document.getElementById('manualName').value.trim();
+  const qty  = Math.max(1, Number(document.getElementById('manualQty').value) || 1);
+  const rate = Number(document.getElementById('manualRate').value) || 0;
+
+  if (!name) {
+    document.getElementById('manualName').focus();
+    toast('Enter an item name.', 'er');
+    return;
+  }
+
+  // Check if same manual name already exists — increment qty
+  const existing = posBill.find(i => i.manual && i.name.toLowerCase() === name.toLowerCase());
+  if (existing) {
+    existing.qty  += qty;
+    existing.total = existing.price * existing.qty;
+  } else {
+    posBill.push({
+      id      : 'M-' + Date.now(),
+      name,
+      category: 'Manual',
+      price   : rate,
+      qty,
+      total   : rate * qty,
+      manual  : true          // flag for yellow highlight & ✏️ label
+    });
+  }
+
+  // Clear inputs, keep focus on name for fast multi-entry
+  document.getElementById('manualName').value  = '';
+  document.getElementById('manualQty').value   = '1';
+  document.getElementById('manualRate').value  = '';
+  document.getElementById('manualName').focus();
+
+  posRenderBill();
+  posCalc();
+  toast(name + ' added', 'ok');
+}
+
+// Enter key on manual fields triggers add
+document.addEventListener('DOMContentLoaded', () => {
+  ['manualName','manualQty','manualRate'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('keydown', e => { if (e.key === 'Enter') posAddManual(); });
+  });
+});
+
+// ── Inline edit helpers ───────────────────────────────────────
+function posEditName(idx, val) {
+  posBill[idx].name = val.trim() || posBill[idx].name;
+  posCalc();
+}
+
+function posEditQty(idx, val) {
+  const qty = Math.max(1, Number(val) || 1);
+  posBill[idx].qty   = qty;
+  posBill[idx].total = posBill[idx].price * qty;
+  posRenderBill();
+  posCalc();
+}
+
+function posEditRate(idx, val) {
+  const rate = Math.max(0, Number(val) || 0);
+  posBill[idx].price = rate;
+  posBill[idx].total = rate * posBill[idx].qty;
+  posRenderBill();
+  posCalc();
+}
+
+function posEditTotal(idx, val) {
+  // User directly typed the final amount — override rate calculation
+  const total = Math.max(0, Number(val) || 0);
+  posBill[idx].total = total;
+  // Back-calculate effective rate
+  if (posBill[idx].qty > 0) posBill[idx].price = +(total / posBill[idx].qty).toFixed(2);
+  posCalc();
+}
+
+// ── Qty +/- buttons ───────────────────────────────────────────
 function posQty(idx, delta) {
-  posBill[idx].qty  = Math.max(1, posBill[idx].qty + delta);
+  posBill[idx].qty   = Math.max(1, posBill[idx].qty + delta);
   posBill[idx].total = posBill[idx].price * posBill[idx].qty;
   posRenderBill();
   posCalc();
